@@ -1,0 +1,1 @@
+java -Xmx100m -Xss100m -cp saxon9he.jar net.sf.saxon.Query -t -o:"../result/result-old.xml" -q:"../XQuery/XQueryZ_backup.xq"

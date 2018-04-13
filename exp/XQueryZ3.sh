@@ -1,0 +1,1 @@
+java -Xmx200m -Xss42000k -cp saxon9he.jar net.sf.saxon.Query -t -o:"result3.xml" -q:"XQueryZ.xq"
