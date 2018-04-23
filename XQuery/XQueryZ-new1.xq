@@ -198,6 +198,61 @@ as node()*
           else local:SearchChild-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output1)
 };
 
+declare function local:descendant ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
+  return  let $resultList := local:SearchDescendant(local:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しdescendantを探す :)
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return  if ($newNum = 0)
+                  then
+                    $resultList
+                  else
+                    let $output1 := local:descendant-next($list, $newNum, $label, $resultList)
+                    return $output1
+};
+
+declare function local:descendant-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $resultList := local:SearchDescendant(local:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
+  let $newNum := local:searchTerminal($list, $num + 1)
+  return
+    if ($newNum = 0)
+    then
+      $resultList
+    else
+      let $output1 := local:descendant-next($list, $newNum, $label, $resultList)
+      return $output1
+};
+
+declare function local:SearchDescendant ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:type-check-new($list) (: 非終端か変数　-> 終端 :)
+  let $current := $newList[fn:last()] (: カレントノード :)
+  return  if (fn:empty($current/*[1]))
+          then $output
+          else local:SearchChild-main(($newList[fn:last() > fn:position()], $current/*[1]), $label, $output)  (: last > position は、カレントノードだけ置き換えるため :)
+};
+
+declare function local:SearchDescendant-main ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:type-check-new($list) (: 非終端か変数　-> 終端 :)
+  let $current := $newList[fn:last()] (: カレントノード :)
+  let $output1 := ( 
+                    if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
+                    then  local:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                    else  $output
+                  )
+  return  if (fn:empty($current/*[1]))
+          then  if (fn:empty($current/*[2]))
+                then $output1
+                else local:SearchDescendant-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output1)  (: last > position は、カレントノードだけ置き換えるため :)
+          else local:SearchDescendant-main(($newList[fn:last() > fn:position()], $current/*[1]), $label, $output1)
+};
+
 (: 全体のリストに登録 :)
 declare function local:setDDOlist($output as node()*, $list as node()*, $outputNum as xs:integer, $listNum as xs:integer)
 as node()*  (: 返り値は登録後のリスト :)
@@ -356,7 +411,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:child(local:child(local:child(local:child($v,"*"),"*"),"*"),"*")
+return local:descendant($v,"*")
 ,
 1,
 "START -> "
