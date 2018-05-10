@@ -136,6 +136,35 @@ as xs:integer
     return $num1
 };
 
+(: ポインタを親に移動するための関数 :)
+declare function local:gotoparent ($list as node()*)
+as node()*
+{
+  let $current := $list[fn:last()]
+  let $output := (
+                  if ($current/parent::*/@type = "N") (: 親が非終端記号の場合 :)(: rankがいくつの非終端記号によって変わる :)
+                  then
+                    if(fn:count($current/preceding-sibling::*) = 0)
+                    then  local:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, fn:root($current)/*/*[name()=fn:name($current/parent::*)]/*[2]//y0[@type="V"]))
+                    else if(fn:count($current/preceding-sibling::*) = 1)
+                    then  local:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, fn:root($current)/*/*[name()=fn:name($current/parent::*)]/*[2]//y1[@type="V"]))
+                    else if(fn:count($current/preceding-sibling::*) = 2)
+                    then  local:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, fn:root($current)/*/*[name()=fn:name($current/parent::*)]/*[2]//y2[@type="V"]))
+                    else if(fn:count($current/preceding-sibling::*) = 3)
+                    then  local:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, fn:root($current)/*/*[name()=fn:name($current/parent::*)]/*[2]//y3[@type="V"]))
+                    else ()
+                  else if($current/parent::*/@type="N_root")  (: 親が非終端記号の部分木の頂点の場合 :)
+                  then
+                    let $current1 := $list[fn:last() - 1]
+                    return  local:gotoparent($list[fn:position() < fn:last()])
+                  else  (: 親が終端記号の場合 :)
+                    if($current is $current/parent::*/*[1]) (: first child or next sibling:)
+                    then  ($list[fn:position() < fn:last()], $current/parent::*)
+                    else  local:gotoparent(($list[fn:position() < fn:last()], $current/parent::*))
+      )
+  return $output
+};
+
 
 (:child軸の関数:)
 (: $listはtrie木 :)
@@ -297,6 +326,28 @@ as node()*
           else  $output
 };
 
+(: descentdant-or-self軸 :)
+declare function local:descendant-or-self ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
+  return  let $resultList := local:SearchDescendant(local:getList($list, $startNum, ()), $label, local:self($list, $label)) (: getListでリストを作成しdescendantを探す :)
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return  if ($newNum = 0)
+                  then
+                    $resultList
+                  else
+                    let $output1 := local:descendant-next($list, $newNum, $label, $resultList)
+                    return $output1
+};
+
+(: parent軸 :)
+declare function local:parent ($list as node()*, $label as xs:string)
+as node()*
+{
+    let $startNum := local:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
+    
+};
 
 
 (: 全体のリストに登録 :)
@@ -319,6 +370,11 @@ as node()*  (: 返り値は登録後のリスト :)
                   )
   return $output1
 };
+
+
+
+
+
 
 (: ()内の処理 :)
 (: flagは()内に分岐できるノードがあるときtrueに :)

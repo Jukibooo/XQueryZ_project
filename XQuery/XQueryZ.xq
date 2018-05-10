@@ -986,18 +986,18 @@ as node()*
 };
 
 (:ここにファイル名を入力:)
-(:declare variable $original := doc("ex/Nasa/Nasa-r.xml");:)
+declare variable $original := doc("ex/Nasa/Nasa-r.xml");
 (:declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");:)
 (:declare variable $original := doc("ex/Treebank/Treebank-r.xml");:)
 (:declare variable $original := doc("ex/DBLP/DBLP-r.xml");:)
-declare variable $original := doc("../sample.xml");
+(:declare variable $original := doc("../sample.xml");:)
       
 (: //reference/source :)
 
 
 
 for $v in local:doc($original)
-return local:child-new($v[1], $v[2], "SEASON")
+return local:descendant($v[1], $v[2], "")
 
 
 
