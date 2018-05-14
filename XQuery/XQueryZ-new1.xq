@@ -342,12 +342,14 @@ as node()*
 };
 
 (: parent軸 :)
+(:)
 declare function local:parent ($list as node()*, $label as xs:string)
 as node()*
 {
     let $startNum := local:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
-    
+
 };
+:)
 
 
 (: 全体のリストに登録 :)
@@ -496,8 +498,8 @@ as xs:string
 
 
 (:ここにファイル名を入力:)
-(:declare variable $original := doc("../ex/Nasa/Nasa-r.xml");:)
-declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");
+declare variable $original := doc("../ex/Nasa/Nasa-r.xml");
+(:declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");:)
 (:declare variable $original := doc("ex/Treebank/Treebank-r.xml");:)
 (:declare variable $original := doc("ex/DBLP/DBLP-r.xml");:)
       
@@ -513,7 +515,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:self(local:descendant($v,"*"),"*")
+return local:self((local:descendant($v,"source"), local:descendant($v,"reference")), "*")
 ,
 1,
 "START -> "
