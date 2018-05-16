@@ -1,3 +1,5 @@
+(: TRIE木を用いた手法 :)
+
 
 
 declare function local:type-check-new ($list as node()*)
@@ -342,14 +344,49 @@ as node()*
 };
 
 (: parent軸 :)
-(:)
+
 declare function local:parent ($list as node()*, $label as xs:string)
 as node()*
 {
     let $startNum := local:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
-
+    return  let $resultList := local:SearchParent(local:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return
+                  if ($newNum = 0)
+                  then
+                    $resultList
+                  else
+                    let $output1 := local:parent-next($list, $newNum, $label, $resultList)
+                    return $output1
 };
-:)
+
+declare function local:parent-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $resultList := local:SearchParent(local:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
+  let $newNum := local:searchTerminal($list, $num + 1)
+  return
+    if ($newNum = 0)
+    then
+      $resultList
+    else
+      let $output1 := local:parent-next($list, $newNum, $label, $resultList)
+      return $output1
+};
+
+declare function local:SearchParent ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:gotoparent($list) (: 非終端か変数　-> 終端 :)
+  let $current := $newList[fn:last()] (: カレントノード :)
+  return  if ($current/@type = "root")
+          then  if ($label = "*")
+                then local:setDDOlist($output, $current/*[2], 1, 1)
+                else $output
+          else  if (fn:name($current) = $label or $label = "*")
+                then local:setDDOlist($output, $newList, 1, 1)
+                else $output
+};
 
 
 (: 全体のリストに登録 :)
@@ -515,7 +552,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:self((local:descendant($v,"source"), local:descendant($v,"reference")), "*")
+return local:parent(local:descendant($v,"author"), "*")
 ,
 1,
 "START -> "
