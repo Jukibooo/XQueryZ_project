@@ -552,7 +552,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:parent(local:descendant($v,"author"), "*")
+return local:child(local:descendant($v,"reference"), "*")
 ,
 1,
 "START -> "
