@@ -1,2 +1,2 @@
 for $v in doc("Nasa.xml")
-return $v//ingest
+return let $v//ingest

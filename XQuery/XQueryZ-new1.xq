@@ -405,7 +405,11 @@ as node()*  (: 返り値は登録後のリスト :)
                     then  
                       local:setDDOlist-Parantheses($output, $list, $outputNum + 1, $listNum, fn:false())
                     else    (: ノードが違う場合，分岐を作成 :)
-                      ($output[$outputNum > fn:position()], $left, $left, $output[$outputNum <= fn:position()], $right, $left, $list[$listNum <= fn:position()], $right, $right)  (: result :)
+                      if ($output[$outputNum] << $list[$listNum]) (: 文書順かどうかの確認 :)
+                      then
+                        ($output[$outputNum > fn:position()], $left, $left, $output[$outputNum <= fn:position()], $right, $left, $list[$listNum <= fn:position()], $right, $right)  (: result :)
+                      else
+                        ($output[$outputNum > fn:position()], $left, $left, $list[$listNum <= fn:position()], $right, $left, $output[$outputNum <= fn:position()], $right, $right)  (: result :)
                   )
   return $output1
 };
@@ -437,9 +441,16 @@ as node()*
                         then
                           let $nextoutputNum := local:nextBranch($output, $outputNum + 1, 0)
                           return
-                          ($output[$outputNum > fn:position()], $left, $left, $output[$outputNum <= fn:position() and fn:position() < $nextoutputNum - 1], $right, $left, $list[$listNum <= fn:position()], $right, $right, $output[$nextoutputNum - 1 <=
-                           fn:position()])  (: result :)
+                            if ($output[$outputNum] << $list[$listNum])
+                            then
+                              ($output[$outputNum > fn:position()], $left, $left, $output[$outputNum <= fn:position() and fn:position() < $nextoutputNum - 1], $right, $left, $list[$listNum <= fn:position()], $right, $right, $output[$nextoutputNum - 1 <= fn:position()])  (: result :)
+                            else
+                              ($output[$outputNum > fn:position()], $left, $left, $list[$listNum <= fn:position()], $right, $left,  $output[$outputNum <= fn:position() and fn:position() < $nextoutputNum - 1],$right, $right, $output[$nextoutputNum - 1 <= fn:position()])  (: result :)
                         else  (: 次の分岐を検索 :)
+                          if ($output[$outputNum] >> $list[$listNum])
+                          then
+                            ($output[$outputNum - 1 > fn:position()], $left, $list[$listNum <= fn:position()], $right, $output[$outputNum - 1 <= fn:position()])  (: result :)
+                          else
                           let $outputNum1 := local:nextBranch($output, $outputNum + 1, 0)
                           return  if ($output[$outputNum1] is $right or fn:empty($output[$outputNum1])) (: 分岐終了の場合 :)
                                   then
@@ -552,7 +563,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:child(local:descendant($v,"reference"), "*")
+return local:self((local:descendant($v,"reference"), local:descendant($v,"source")), "*")
 ,
 1,
 "START -> "
