@@ -61,7 +61,10 @@ as xs:boolean
 declare function local:getList ($list as node()*, $num as xs:integer, $output as node()*)
 as node()*
 {
-  if (fn:empty($list[$num]))
+  if ($list[$num]/@type = "root")
+  then
+    $list[$num]/child::*[1]
+  else if (fn:empty($list[$num]))
   then
     $output
   else
@@ -122,7 +125,9 @@ as xs:integer
 declare function local:searchTerminal ($list as node()*, $num as xs:integer)
 as xs:integer
 {
-  if (fn:empty($list[$num]))
+  if ($list[$num]/@type = "root")
+  then  1
+  else if (fn:empty($list[$num]))
   then
     0
   else
@@ -562,8 +567,8 @@ return local:child($v,"*")
 
 
 local:output(
-for $v in $original/root/S/child::*[2]/*[1]
-return local:self((local:descendant($v,"reference"), local:descendant($v,"source")), "*")
+for $v in $original/root/S/child::*[2]
+return local:descendant($v, "*")
 ,
 1,
 "START -> "
