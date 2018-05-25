@@ -6,7 +6,7 @@ import sys
 args = sys.argv
 
 #第一引数には通貨ペア，第二引数には売買の選択
-def Signal(program, heap, stack):
+def Signal(program, query, heap, stack):
 
 	# Webhooks URL
 	url = "https://hooks.slack.com/services/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"
@@ -15,7 +15,7 @@ def Signal(program, heap, stack):
     	"attachments": [
     		{
     			"title": program,
-   				"text": "[heap]"+heap+"(m), [stack]"+stack+"(m)"
+   				"text": query + "\n[heap]"+heap+"(m), [stack]"+stack+"(m)"
     		}
     	]
 	}
@@ -23,4 +23,4 @@ def Signal(program, heap, stack):
 	r = requests.post(url, data=json.dumps(payload_dic))
 
 if __name__ == '__main__':
-    Signal(args[1], args[2], args[3])
+    Signal(args[1], args[2], args[3], args[4])

@@ -50,46 +50,49 @@ plus_stack () {	# スタックサイズを足す関数
 	done
 }
 
-heap=100	# 初期ヒープサイズ指定
-stack=100	# 初期スタックサイズ指定
+filename="Nasa.xml"
+query="(//tableLinks, //source)/parent::*"
+
+heap=1024	# 初期ヒープサイズ指定
+stack=1024	# 初期スタックサイズ指定
 
 ./XQueryZ.sh "$heap"m "$stack"m
 
 if [ "$?" -eq "1" ]	# 実行失敗(1)したら
 then
-	plus_heap 10
+	plus_heap 100
 
-	minus_heap 5
+	minus_heap 10
 
 	plus_heap 1
 
-	plus_stack 10
+	plus_stack 100
 
-	minus_stack 5
+	minus_stack 10
 
 	plus_stack 1
 
-	python3 finish_signal.py XQueryZ.xq "$heap" "$stack"
+	python3 finish_signal.py "${filename}" "${query}" "$heap" "$stack"
 
 else	# 実行成功(0)したら
 	
-	minus_heap 10
+	minus_heap 100
 
-	plus_heap 5
+	plus_heap 10
 
 	minus_heap 1
 
 	heap=`expr $heap + 1`
 
-	minus_stack 10
+	minus_stack 100
 
-	plus_stack 5
+	plus_stack 10
 
 	minus_stack 1
 
 	stack=`expr $stack + 1` 
 
-	python3 finish_signal.py XQueryZ.xq "$heap" "$stack"
+	python3 finish_signal.py "${filename}" "${query}" "$heap" "$stack"
 
 fi
 
