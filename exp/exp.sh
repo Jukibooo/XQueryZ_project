@@ -50,8 +50,8 @@ plus_stack () {	# スタックサイズを足す関数
 	done
 }
 
-filename="Nasa.xml"
-query="(//tableLinks, //source)/parent::*"
+filename="Treebank.xml"
+query="(//DT, //VP)/parent::*"
 
 heap=1024	# 初期ヒープサイズ指定
 stack=1024	# 初期スタックサイズ指定
