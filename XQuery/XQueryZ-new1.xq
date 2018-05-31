@@ -548,8 +548,8 @@ as xs:string
 (:ここにファイル名を入力:)
 (:declare variable $original := doc("../ex/Nasa/Nasa-r.xml");:)
 (:declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");:)
-declare variable $original := doc("../ex/Treebank/Treebank-r.xml");
-(:declare variable $original := doc("ex/DBLP/DBLP-r.xml");:)
+(:declare variable $original := doc("../ex/Treebank/Treebank-r.xml");:)
+declare variable $original := doc("../ex/DBLP/DBLP-r.xml");
       
 (: //reference/source :)
 
@@ -563,7 +563,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:parent((local:descendant($v, "DT"), local:descendant($v, "VP")), "*")
+return local:descendant($v, "author")
 ,
 1,
 "START -> "

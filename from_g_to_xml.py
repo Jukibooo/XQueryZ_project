@@ -31,29 +31,25 @@ def right_hand_side(right_str):
 	right_list = []
 
 	global num
-	global node_id
 
 
 	#placeholder，または右辺の要素が1つのみの場合は個別に処理する
 	if len(right_str) == 2:
-		w.write('<'+right_str[0]+' type="'+type_check(right_str[0])+'" id="'+ str(node_id) + '"/>\n')
-		node_id += 1
+		w.write('<'+right_str[0]+' type="'+type_check(right_str[0])+'"/>\n')
 		return
 
 	while num < len(right_str)-1:	#"("か")"か","がくるまでループ，1文字ずつ文字列を読み込む
 
 		
 		if (right_str[num] == "("):
-			w.write('<'+temp_str+' type="'+type_check(temp_str)+'" id="'+str(node_id)+'">\n')
-			node_id += 1
+			w.write('<'+temp_str+' type="'+type_check(temp_str)+'">\n')
 			right_list.append(temp_str)
 			temp_str = ""
 			num += 1
 
 		elif (right_str[num] == ")"):
 			if right_str[num-1] != ")":	#")"の前に")"が存在しない場合，ノードは葉になる
-				w.write('<'+temp_str+' type="'+type_check(temp_str)+'" id="'+ str(node_id) +'"/>\n')
-				node_id += 1
+				w.write('<'+temp_str+' type="'+type_check(temp_str)+'"/>\n')
 			w.write('</'+right_list[-1]+'>\n')
 			temp_str = ""
 			right_list.pop()
@@ -61,8 +57,7 @@ def right_hand_side(right_str):
 
 		elif (right_str[num] == ","):
 			if right_str[num-1] != ')':	#","の前に")"がない場合
-				w.write('<'+temp_str+' type="'+type_check(temp_str)+'" id="'+ str(node_id) +'"/>\n')
-				node_id += 1
+				w.write('<'+temp_str+' type="'+type_check(temp_str)+'"/>\n')
 			temp_str = ""
 			num += 2
 
@@ -197,13 +192,10 @@ if __name__ == '__main__':
 				split_args = splitline1[1].split(', ')	#引数を", "で分割
 				split_args[len(split_args)-1] = split_args[len(split_args)-1][:-1] 	#最後の")"を消す
 
-				w.write('<'+splitline1[0]+' type="nonterminal_root" id="'+ str(node_id) +'">\n')	
-				node_id += 1
-				w.write('<'+splitline1[0]+' type="'+type_check(splitline[0])+'" id="'+ str(node_id) +'">\n')	#左辺開始
-				node_id += 1
+				w.write('<'+splitline1[0]+' type="nonterminal_root">\n')
+				w.write('<'+splitline1[0]+' type="'+type_check(splitline[0])+'">\n')	#左辺開始
 				for split_args_num in split_args:	#左辺の引数を子に持つ
-					w.write('<'+split_args_num+' type="'+type_check(split_args_num)+'" id="'+ str(node_id) +'"/>\n')
-					node_id += 1
+					w.write('<'+split_args_num+' type="'+type_check(split_args_num)+'"/>\n')
 				w.write('</'+splitline1[0]+'>\n')	#左辺終了
 				#右辺について
 				num = 0
@@ -214,19 +206,16 @@ if __name__ == '__main__':
 		else:	#存在していない場合
 			if splitline[0] == "xml_collapse_start":
 				w.write('<'+input_start_symbol+'>\n')
-				w.write('<'+input_start_symbol+' type="'+type_check(splitline[0])+'" id="'+ str(node_id) +'"/>\n')
-				node_id += 1
+				w.write('<'+input_start_symbol+' type="'+type_check(splitline[0])+'"/>\n')
 			else:
 				w.write('<'+splitline[0]+' type="nonterminal_root">\n')
-				w.write('<'+splitline[0]+' type="'+type_check(splitline[0])+'" id="'+ str(node_id) +'"/>\n')	#左辺
-				node_id += 1
+				w.write('<'+splitline[0]+' type="'+type_check(splitline[0])+'"/>\n')	#左辺
 			#右辺について
 			num = 0
 
 			#開始記号にはrootノードをつける
 			if splitline[0] == "xml_collapse_start":
-				w.write('<'+input_start_symbol+' type="root" id="'+ str(node_id) +'">\n')
-				node_id += 1
+				w.write('<'+input_start_symbol+' type="root">\n')
 				right_hand_side(line_right)
 				w.write('</'+input_start_symbol+'>\n')
 			else:
