@@ -413,7 +413,7 @@ as node()*
           then
             $resultList
           else
-            let $output1 := local:parent-next($list, $newNum, $label, $resultList)
+            let $output1 := local:ancestor-next($list, $newNum, $label, $resultList)
             return $output1
 };
 
@@ -609,7 +609,11 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
+<<<<<<< HEAD
 return local:descendant($v, "DT")
+=======
+return local:ancestor(local:descendant($v, "PLAYER"), "*")
+>>>>>>> 09fa288dc5587f48c273fb96298cd5500f45c63e
 ,
 1,
 "START -> "
