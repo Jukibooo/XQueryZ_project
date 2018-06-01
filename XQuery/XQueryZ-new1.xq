@@ -246,6 +246,7 @@ as node()*
 declare function local:descendant-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
+  fn:trace((),"=================================="),
   let $resultList := local:SearchDescendant(local:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := local:searchTerminal($list, $num + 1)
   return
@@ -274,7 +275,7 @@ as node()*
   let $current := $newList[fn:last()] (: カレントノード :)
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                    then  local:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                    then  (fn:trace((),"get descendant"),local:setDDOlist($output, $newList, 1, 1)) (: TRIE木に登録 :)
                     else  $output
                   )
   return  (
@@ -437,6 +438,7 @@ as node()*
 declare function local:setDDOlist($output as node()*, $list as node()*, $outputNum as xs:integer, $listNum as xs:integer)
 as node()*  (: 返り値は登録後のリスト :)
 {
+  fn:trace((),"DDO check"),
   if (fn:empty($output))
   then $list
   else if (fn:empty($list[$listNum]))
@@ -591,8 +593,8 @@ as xs:string
 
 (:ここにファイル名を入力:)
 (:declare variable $original := doc("../ex/Nasa/Nasa-r.xml");:)
-declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");
-(:declare variable $original := doc("../ex/Treebank/Treebank-r.xml");:)
+(:declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");:)
+declare variable $original := doc("../ex/Treebank/Treebank-r.xml");
 (:declare variable $original := doc("../ex/DBLP/DBLP-r.xml");:)
       
 (: //reference/source :)
@@ -607,7 +609,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:ancestor(local:descendant($v, "DIVISION_NAME"), "*")
+return local:descendant($v, "DT")
 ,
 1,
 "START -> "
