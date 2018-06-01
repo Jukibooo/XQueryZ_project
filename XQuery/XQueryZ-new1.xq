@@ -349,7 +349,7 @@ declare function local:parent ($list as node()*, $label as xs:string)
 as node()*
 {
     let $startNum := local:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
-    return  let $resultList := local:SearchParent(local:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
+    return  let $resultList := local:SearchParent(local:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しparentを探す :)
           let $newNum := local:searchTerminal($list, $startNum + 1)
           return
                   if ($newNum = 0)
@@ -363,7 +363,7 @@ as node()*
 declare function local:parent-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $resultList := local:SearchParent(local:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
+  let $resultList := local:SearchParent(local:getList($list, $num, ()), $label, $output) (: getListでリストを作成しparentを探す :)
   let $newNum := local:searchTerminal($list, $num + 1)
   return
     if ($newNum = 0)
@@ -386,6 +386,50 @@ as node()*
           else  if (fn:name($current) = $label or $label = "*")
                 then local:setDDOlist($output, $newList, 1, 1)
                 else $output
+};
+
+declare function local:ancestor ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
+  return  let $resultList := local:SearchAncestor(local:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return
+                  if ($newNum = 0)
+                  then
+                    $resultList
+                  else
+                    let $output1 := local:ancestor-next($list, $newNum, $label, $resultList)
+                    return $output1
+};
+
+declare function local:ancestor-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $resultList := local:SearchAncestor(local:getList($list, $num, ()), $label, $output) (: getListでリストを作成しparentを探す :)
+  let $newNum := local:searchTerminal($list, $num + 1)
+  return  if ($newNum = 0)
+          then
+            $resultList
+          else
+            let $output1 := local:parent-next($list, $newNum, $label, $resultList)
+            return $output1
+};
+
+declare function local:SearchAncestor ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:gotoparent($list) (: 非終端か変数　-> 終端 :)
+  let $current := $newList[fn:last()] (: カレントノード :)
+  return  if ($current/@type = "root")
+          then  $output
+          else  let $output1 := (
+                                 if (fn:name($current) = $label or $label = "*")
+                                 then local:setDDOlist($output, $newList, 1, 1)
+                                 else $output
+                                )
+                return local:SearchAncestor($newList, $label, $output1)
+                
 };
 
 
@@ -547,9 +591,9 @@ as xs:string
 
 (:ここにファイル名を入力:)
 (:declare variable $original := doc("../ex/Nasa/Nasa-r.xml");:)
-(:declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");:)
+declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");
 (:declare variable $original := doc("../ex/Treebank/Treebank-r.xml");:)
-declare variable $original := doc("../ex/DBLP/DBLP-r.xml");
+(:declare variable $original := doc("../ex/DBLP/DBLP-r.xml");:)
       
 (: //reference/source :)
 
@@ -563,7 +607,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:descendant($v, "author")
+return local:ancestor(local:descendant($v, "DIVISION_NAME"), "*")
 ,
 1,
 "START -> "
