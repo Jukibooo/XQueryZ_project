@@ -466,13 +466,12 @@ as node()*
 declare function local:following-sibling-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $startNum := local:searchTerminal($list, 1)
-  return  let $resultList := local:SearchFollowingSibling(local:getList($list, $num, ()), $label, $output)
-          let $newNum := local:searchTerminal($list, $num + 1)
-          return  if ($newNum = 0)
-                  then  $resultList
-                  else  let $output1 := local:following-sibling-next($list, $newNum, $label, $resultList)
-                  return $output1
+  let $resultList := local:SearchFollowingSibling(local:getList($list, $num, ()), $label, $output)
+  let $newNum := local:searchTerminal($list, $num + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  let $output1 := local:following-sibling-next($list, $newNum, $label, $resultList)
+                return $output1
 };
 
 declare function local:SearchFollowingSibling ($list as node()*, $label as xs:string, $output as node()*)
@@ -499,6 +498,67 @@ as node()*
   return  if (fn:empty($current/*[2]))
           then $output1
           else local:SearchFollowingSibling-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output1)
+};
+
+(: following軸 :)
+declare function local:following ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1)
+  return  let $resultList := local:SearchFollowing(local:getList($list, $startNum, ()), $label, ())
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return  if ($newNum = 0)
+                  then  $resultList
+                  else  let $output1 := local:following-next($list, $newNum, $label, $resultList)
+                  return $output1
+};
+
+declare function local:following-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $resultList := local:SearchFollowing(local:getList($list, $num, ()), $label, $output)
+  let $newNum := local:searchTerminal($list, $num + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  let $output1 := local:following-next($list, $newNum, $label, $resultList)
+                return $output1
+};
+
+declare function local:SearchFollowing ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $current := $list[fn:last()]
+  let $output1 := local:SearchDescendant($list, $label, $output)
+  return  if (fn:empty($current/*[2]))
+          then local:SearchFollowing-parent(local:gotoparent($list), $label, $output1)
+          else local:SearchFollowing-main(($list[fn:last() > fn:position()], $current/*[2]), $label, $output1)
+};
+
+declare function local:SearchFollowing-parent ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $current := $list[fn:last()]
+  return  if ($current/@type = "root")
+          then  $output
+          else  if (fn:empty($current/*[2]))
+                then local:SearchFollowing-parent(local:gotoparent($list), $label, $output)
+                else local:SearchFollowing-main(($list[fn:last() > fn:position()], $current/*[2]), $label, $output)
+};
+
+declare function local:SearchFollowing-main ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:type-check-new($list)
+  let $current := $newList[fn:last()]
+  let $output1 := (
+                    if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
+                    then  local:setDDOlist($output, $newList, 1, 1)
+                    else  $output
+                  )
+  let $output2 := local:SearchDescendant($newList, $label, $output1)
+  return  if (fn:empty($current/*[2]))
+          then  local:SearchFollowing(local:gotoparent($newList), $label, $output2)
+          else  local:SearchFollowing-main($newList, $label, $output2)
 };
 
 (: 全体のリストに登録 :)
@@ -675,7 +735,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:following-sibling(local:descendant($v, "TEAM"),"*")
+return local:following(local:descendant($v, "TEAM"),"*")
 ,
 1,
 "START -> "
