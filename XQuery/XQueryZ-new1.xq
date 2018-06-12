@@ -389,6 +389,7 @@ as node()*
                 else $output
 };
 
+(: ancestor軸 :)
 declare function local:ancestor ($list as node()*, $label as xs:string)
 as node()*
 {
@@ -433,16 +434,81 @@ as node()*
                 
 };
 
+(: ancestor-or-self軸 :)
+declare function local:ancestor-or-self ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
+  return  let $resultList := local:SearchAncestor(local:getList($list, $startNum, ()), $label, local:self($list, $label)) (: getListでリストを作成しchildを探す :)
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return
+                  if ($newNum = 0)
+                  then
+                    $resultList
+                  else
+                    let $output1 := local:ancestor-next($list, $newNum, $label, $resultList)
+                    return $output1
+};
+
+(: following-sibling軸 :)
+declare function local:following-sibling ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1)
+  return  let $resultList := local:SearchFollowingSibling(local:getList($list, $startNum, ()), $label, ())
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return  if ($newNum = 0)
+                  then  $resultList
+                  else  let $output1 := local:following-sibling-next($list, $newNum, $label, $resultList)
+                  return $output1
+};
+
+declare function local:following-sibling-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1)
+  return  let $resultList := local:SearchFollowingSibling(local:getList($list, $num, ()), $label, $output)
+          let $newNum := local:searchTerminal($list, $num + 1)
+          return  if ($newNum = 0)
+                  then  $resultList
+                  else  let $output1 := local:following-sibling-next($list, $newNum, $label, $resultList)
+                  return $output1
+};
+
+declare function local:SearchFollowingSibling ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:type-check-new($list)
+  let $current := $newList[fn:last()]
+  return  if (fn:empty($current/*[2]))
+          then $output
+          else local:SearchFollowingSibling-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output)
+
+};
+
+declare function local:SearchFollowingSibling-main ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:type-check-new($list)
+  let $current := $newList[fn:last()]
+  let $output1 := ( 
+                    if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
+                    then  local:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                    else  $output
+                  )
+  return  if (fn:empty($current/*[2]))
+          then $output1
+          else local:SearchFollowingSibling-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output1)
+};
 
 (: 全体のリストに登録 :)
 declare function local:setDDOlist($output as node()*, $list as node()*, $outputNum as xs:integer, $listNum as xs:integer)
 as node()*  (: 返り値は登録後のリスト :)
 {
-  fn:trace((),"DDO check"),
   if (fn:empty($output))
   then $list
   else if (fn:empty($list[$listNum]))
-  then  $output
+  then  (fn:trace((),"DDO check"),$output)
   else
   let $output1 := ( if ($output[$outputNum] is $list[$listNum]) (: 同じノードの場合 :)
                     then  
@@ -471,7 +537,7 @@ declare function local:setDDOlist-Parantheses($output as node()*, $list as node(
 as node()*
 {
   if (fn:empty($list[$listNum]))
-  then  $output
+  then  (fn:trace((),"DDO check"),$output)
   else
     let $output1 := (
                         if($output[$outputNum] is $list[$listNum])  (: 同じノードの場合 :)
@@ -593,8 +659,8 @@ as xs:string
 
 (:ここにファイル名を入力:)
 (:declare variable $original := doc("../ex/Nasa/Nasa-r.xml");:)
-(:declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");:)
-declare variable $original := doc("../ex/Treebank/Treebank-r.xml");
+declare variable $original := doc("../ex/BaseBall/BaseBall-r.xml");
+(:declare variable $original := doc("../ex/Treebank/Treebank-r.xml");:)
 (:declare variable $original := doc("../ex/DBLP/DBLP-r.xml");:)
       
 (: //reference/source :)
@@ -609,11 +675,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-<<<<<<< HEAD
-return local:descendant($v, "DT")
-=======
-return local:ancestor(local:descendant($v, "PLAYER"), "*")
->>>>>>> 09fa288dc5587f48c273fb96298cd5500f45c63e
+return local:following-sibling(local:descendant($v, "TEAM"),"*")
 ,
 1,
 "START -> "
