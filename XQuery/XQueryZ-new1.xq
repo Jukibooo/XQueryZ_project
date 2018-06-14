@@ -801,7 +801,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:preceding-sibling(local:descendant($v, "PLAYER"),"*")
+return local:preceding-sibling(local:descendant($v, "TEAM"),"*")
 ,
 1,
 "START -> "
