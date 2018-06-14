@@ -557,8 +557,8 @@ as node()*
                   )
   let $output2 := local:SearchDescendant($newList, $label, $output1)
   return  if (fn:empty($current/*[2]))
-          then  local:SearchFollowing(local:gotoparent($newList), $label, $output2)
-          else  local:SearchFollowing-main($newList, $label, $output2)
+          then  local:SearchFollowing-parent(local:gotoparent($newList), $label, $output2)
+          else  local:SearchFollowing-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output2)
 };
 
 (: 全体のリストに登録 :)
