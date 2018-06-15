@@ -1,3 +1,13 @@
+(: xquery宣言 :)
+xquery version "1.0" encoding "utf-8";
+
+(: 名前空間宣言 :)
+declare namespace axis2 = "http://xqueryz/axis";
+
+(: インポート :)
+import module "http://xqueryz/axis" at "Axis.xq";
+
+
 (: TRIE木を用いた手法 :)
 
 
@@ -800,7 +810,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:following(local:descendant($v, "TEAM"),"*")
+return local:descendant($v, "TEAM")
 ,
 1,
 "START -> "
