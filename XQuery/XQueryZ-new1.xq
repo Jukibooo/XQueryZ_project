@@ -561,6 +561,72 @@ as node()*
           else  local:SearchFollowing-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output2)
 };
 
+(: preceding-sibling軸 :)
+declare function local:preceding-sibling ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
+  let $newList := local:getList($list, $startNum, ())
+  let $parentlist := local:gotoparent($newList)
+  return  let $resultList := local:SearchPrecedingSibling($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return
+                  if ($newNum = 0)
+                  then
+                    $resultList
+                  else
+                    let $output1 := local:preceding-sibling-next($list, $newNum, $label, $resultList)
+                    return $output1
+};
+
+(: 2個目以降のchild軸 :)
+(: $listはtrie木 :)
+declare function local:preceding-sibling-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:getList($list, $num, ())
+  let $parentlist := local:gotoparent($newList)
+  let $resultList := local:SearchPrecedingSibling($parentlist, $label, $output, $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
+  let $newNum := local:searchTerminal($list, $num + 1)
+  return
+    if ($newNum = 0)
+    then
+      $resultList
+    else
+      let $output1 := local:preceding-sibling-next($list, $newNum, $label, $resultList)
+      return $output1
+};
+
+(: 実際にchildを探す関数 :)
+(: $listはtrie木から一つの経路を抽出したもの :)
+declare function local:SearchPrecedingSibling ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
+as node()*
+{
+  let $newList := local:type-check-new($list)
+  let $current := $newList[fn:last()]
+  return  if ($current/*[1] is $newNode)
+          then $output
+          else local:SearchPrecedingSibling-main(($newList[fn:last() > fn:position()], $current/*[1]), $label, $output, $newNode)
+
+};
+
+declare function local:SearchPrecedingSibling-main ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
+as node()*
+{
+  let $newList := local:type-check-new($list)
+  let $current := $newList[fn:last()]
+  return  if ($current is $newNode)
+          then $output
+          else  let $output1 := ( 
+                                  if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
+                                  then  local:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                                  else  $output
+                                )
+                return  if (fn:empty($current/*[2]))
+                        then $output1
+                        else local:SearchPrecedingSibling-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output1, $newNode)
+};
+
 (: 全体のリストに登録 :)
 declare function local:setDDOlist($output as node()*, $list as node()*, $outputNum as xs:integer, $listNum as xs:integer)
 as node()*  (: 返り値は登録後のリスト :)
@@ -735,7 +801,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:following(local:descendant($v, "TEAM"),"*")
+return local:preceding-sibling(local:descendant($v, "TEAM"),"*")
 ,
 1,
 "START -> "
