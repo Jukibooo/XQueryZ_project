@@ -528,10 +528,9 @@ declare function local:SearchFollowing ($list as node()*, $label as xs:string, $
 as node()*
 {
   let $current := $list[fn:last()]
-  let $output1 := local:SearchDescendant($list, $label, $output)
   return  if (fn:empty($current/*[2]))
-          then local:SearchFollowing-parent(local:gotoparent($list), $label, $output1)
-          else local:SearchFollowing-main(($list[fn:last() > fn:position()], $current/*[2]), $label, $output1)
+          then local:SearchFollowing-parent(local:gotoparent($list), $label, $output)
+          else local:SearchFollowing-main(($list[fn:last() > fn:position()], $current/*[2]), $label, $output)
 };
 
 declare function local:SearchFollowing-parent ($list as node()*, $label as xs:string, $output as node()*)
@@ -801,7 +800,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:preceding-sibling(local:descendant($v, "TEAM"),"*")
+return local:following(local:descendant($v, "TEAM"),"*")
 ,
 1,
 "START -> "
