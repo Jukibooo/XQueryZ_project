@@ -2,7 +2,7 @@
 xquery version "1.0" encoding "utf-8";
 
 (: 名前空間宣言 :)
-declare namespace axis2 = "http://xqueryz/axis";
+declare namespace axis = "http://xqueryz/axis";
 
 (: インポート :)
 import module "http://xqueryz/axis" at "Axis.xq";
@@ -255,6 +255,7 @@ as node()*
 declare function local:descendant-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
+  fn:trace((),"=================================="),
   let $resultList := local:SearchDescendant(local:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := local:searchTerminal($list, $num + 1)
   return
@@ -283,7 +284,7 @@ as node()*
   let $current := $newList[fn:last()] (: カレントノード :)
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                    then  local:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                    then  (fn:trace((),"get descendant"),local:setDDOlist($output, $newList, 1, 1)) (: TRIE木に登録 :)
                     else  $output
                   )
   return  (
@@ -692,7 +693,8 @@ as node()*
   let $newList := local:type-check-new($list)
   let $current := $newList[fn:last()]
   return  if ($current is $newNode)
-          then  local:SearchPreceding-parent(local:gotoparent($newList), $label, $output)
+          then (
+  fn:trace((),"ROOP"),local:SearchPreceding-parent(local:gotoparent($newList), $label, $output))
           else  let $output1 := ( 
                                   if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
                                   then  local:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
@@ -711,7 +713,7 @@ as node()*  (: 返り値は登録後のリスト :)
   if (fn:empty($output))
   then $list
   else if (fn:empty($list[$listNum]))
-  then  $output
+  then  (fn:trace((),"DDO check"),$output)
   else
   let $output1 := ( if ($output[$outputNum] is $list[$listNum]) (: 同じノードの場合 :)
                     then  
@@ -740,7 +742,7 @@ declare function local:setDDOlist-Parantheses($output as node()*, $list as node(
 as node()*
 {
   if (fn:empty($list[$listNum]))
-  then  $output
+  then  (fn:trace((),"DDO check"),$output)
   else
     let $output1 := (
                         if($output[$outputNum] is $list[$listNum])  (: 同じノードの場合 :)
@@ -878,7 +880,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return axis2:descendant($v, "DIVISION")
+return axis:descendant($v, "DIVISION")
 ,
 1,
 "START -> "
