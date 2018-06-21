@@ -34,10 +34,8 @@ as node()*
     else
       local:type-check-new(($list[(fn:last() - 1) > fn:position()], $list[fn:last() - 1]/*[4]))
   (: 終端記号の場合 :)
-  else if ($list[fn:last()]/@type = "T")
-  then
+  else 
     $list
-  else ()
 };
 
 
@@ -173,6 +171,7 @@ as node()*
                     if($current is $current/parent::*/*[1]) (: first child or next sibling:)
                     then  ($list[fn:position() < fn:last()], $current/parent::*)
                     else  local:gotoparent(($list[fn:position() < fn:last()], $current/parent::*))
+
       )
   return $output
 };
@@ -636,6 +635,77 @@ as node()*
                         else local:SearchPrecedingSibling-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output1, $newNode)
 };
 
+
+(: preceding軸 :)
+declare function local:preceding ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := local:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
+  let $newList := local:getList($list, $startNum, ())
+  let $parentlist := local:gotoparent($newList)
+  return  let $resultList := local:SearchPreceding($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
+          let $newNum := local:searchTerminal($list, $startNum + 1)
+          return
+                  if ($newNum = 0)
+                  then
+                    $resultList
+                  else
+                    let $output1 := local:preceding-next($list, $newNum, $label, $resultList)
+                    return $output1
+};
+
+declare function local:preceding-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := local:getList($list, $num, ())
+  let $parentlist := local:gotoparent($newList)
+  let $resultList := local:SearchPreceding($parentlist, $label, $output, $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
+  let $newNum := local:searchTerminal($list, $num + 1)
+  return
+    if ($newNum = 0)
+    then
+      $resultList
+    else
+      let $output1 := local:preceding-next($list, $newNum, $label, $resultList)
+      return $output1
+};
+
+declare function local:SearchPreceding ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
+as node()*
+{
+  let $current := $list[fn:last()]
+  return  local:SearchPreceding-main(($list[fn:last() > fn:position()], $current/*[1]), $label, $output, $newNode)
+};
+
+declare function local:SearchPreceding-parent ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $current := $list[fn:last()]
+  let $parentlist := local:gotoparent($list)
+  return  if ($current/@type = "root")
+          then  $output
+          else  local:SearchPreceding($parentlist, $label, $output, $current)
+};
+
+declare function local:SearchPreceding-main ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
+as node()*
+{
+  let $newList := local:type-check-new($list)
+  let $current := $newList[fn:last()]
+  return  if ($current is $newNode)
+          then (
+  fn:trace((),"ROOP"),local:SearchPreceding-parent(local:gotoparent($newList), $label, $output))
+          else  let $output1 := ( 
+                                  if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
+                                  then  local:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                                  else  $output
+                                )
+                let $output2 := local:SearchDescendant($newList, $label, $output1)
+                return  local:SearchPreceding-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output2, $newNode)
+};
+
+
+
 (: 全体のリストに登録 :)
 declare function local:setDDOlist($output as node()*, $list as node()*, $outputNum as xs:integer, $listNum as xs:integer)
 as node()*  (: 返り値は登録後のリスト :)
@@ -810,7 +880,7 @@ return local:child($v,"*")
 
 local:output(
 for $v in $original/root/S/child::*[2]/*[1]
-return local:descendant($v, "TEAM")
+return local:preceding(local:descendant($v, "TEAM"), "DIVISION")
 ,
 1,
 "START -> "
