@@ -1,17 +1,20 @@
 (: xquery宣言 :)
 xquery version "1.0" encoding "utf-8";
 
-(: モジュール宣言 :)
+(: 名前空間宣言 :)
 module namespace axis = "http://xqueryz/axis";
 
-(: 関数宣言 :)
+(: TRIE木を用いた手法 :)
+
+
+
 declare function axis:type-check-new ($list as node()*)
 as node()*
 {
   (: 非終端記号の場合 :)
   if ($list[fn:last()]/@type = "N")
   then
-    axis:type-check-new(($list, axis:original ()/*/*[name()=fn:name($list[fn:last()])]/*[2]))
+    axis:type-check-new(($list, axis:original()/*/*[name()=fn:name($list[fn:last()])]/*[2]))
   (: 変数の場合 :)
   else if ($list[fn:last()]/@type = "V")
   then
@@ -27,17 +30,15 @@ as node()*
     else
       axis:type-check-new(($list[(fn:last() - 1) > fn:position()], $list[fn:last() - 1]/*[4]))
   (: 終端記号の場合 :)
-  else if ($list[fn:last()]/@type = "T")
-  then
+  else 
     $list
-  else ()
 };
 
 
 
-declare function axis:left () {<left_separator/>}; (: ( :) (: new :)
+declare function axis:left () as node() { <left_separator/> }; (: ( :) (: new :)
 
-declare function axis:right () {<right_separator/>}; (: ) :) (: new :)
+declare function axis:right () as node() { <right_separator/> }; (: ) :) (: new :)
 
 (:
 (: カレントノードが()の中かどうか確認 :)
@@ -166,6 +167,7 @@ as node()*
                     if($current is $current/parent::*/*[1]) (: first child or next sibling:)
                     then  ($list[fn:position() < fn:last()], $current/parent::*)
                     else  axis:gotoparent(($list[fn:position() < fn:last()], $current/parent::*))
+
       )
   return $output
 };
@@ -249,7 +251,6 @@ as node()*
 declare function axis:descendant-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((),"=================================="),
   let $resultList := axis:SearchDescendant(axis:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := axis:searchTerminal($list, $num + 1)
   return
@@ -278,7 +279,7 @@ as node()*
   let $current := $newList[fn:last()] (: カレントノード :)
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                    then  (fn:trace((),"get descendant"),axis:setDDOlist($output, $newList, 1, 1)) (: TRIE木に登録 :)
+                    then  axis:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
                     else  $output
                   )
   return  (
@@ -629,6 +630,76 @@ as node()*
                         else axis:SearchPrecedingSibling-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output1, $newNode)
 };
 
+
+(: preceding軸 :)
+declare function axis:preceding ($list as node()*, $label as xs:string)
+as node()*
+{
+  let $startNum := axis:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
+  let $newList := axis:getList($list, $startNum, ())
+  let $parentlist := axis:gotoparent($newList)
+  return  let $resultList := axis:SearchPreceding($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
+          let $newNum := axis:searchTerminal($list, $startNum + 1)
+          return
+                  if ($newNum = 0)
+                  then
+                    $resultList
+                  else
+                    let $output1 := axis:preceding-next($list, $newNum, $label, $resultList)
+                    return $output1
+};
+
+declare function axis:preceding-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $newList := axis:getList($list, $num, ())
+  let $parentlist := axis:gotoparent($newList)
+  let $resultList := axis:SearchPreceding($parentlist, $label, $output, $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
+  let $newNum := axis:searchTerminal($list, $num + 1)
+  return
+    if ($newNum = 0)
+    then
+      $resultList
+    else
+      let $output1 := axis:preceding-next($list, $newNum, $label, $resultList)
+      return $output1
+};
+
+declare function axis:SearchPreceding ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
+as node()*
+{
+  let $current := $list[fn:last()]
+  return  axis:SearchPreceding-main(($list[fn:last() > fn:position()], $current/*[1]), $label, $output, $newNode)
+};
+
+declare function axis:SearchPreceding-parent ($list as node()*, $label as xs:string, $output as node()*)
+as node()*
+{
+  let $current := $list[fn:last()]
+  let $parentlist := axis:gotoparent($list)
+  return  if ($current/@type = "root")
+          then  $output
+          else  axis:SearchPreceding($parentlist, $label, $output, $current)
+};
+
+declare function axis:SearchPreceding-main ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
+as node()*
+{
+  let $newList := axis:type-check-new($list)
+  let $current := $newList[fn:last()]
+  return  if ($current is $newNode)
+          then  axis:SearchPreceding-parent(axis:gotoparent($newList), $label, $output)
+          else  let $output1 := ( 
+                                  if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
+                                  then  axis:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                                  else  $output
+                                )
+                let $output2 := axis:SearchDescendant($newList, $label, $output1)
+                return  axis:SearchPreceding-main(($newList[fn:last() > fn:position()], $current/*[2]), $label, $output2, $newNode)
+};
+
+
+
 (: 全体のリストに登録 :)
 declare function axis:setDDOlist($output as node()*, $list as node()*, $outputNum as xs:integer, $listNum as xs:integer)
 as node()*  (: 返り値は登録後のリスト :)
@@ -636,7 +707,7 @@ as node()*  (: 返り値は登録後のリスト :)
   if (fn:empty($output))
   then $list
   else if (fn:empty($list[$listNum]))
-  then  (fn:trace((),"DDO check"),$output)
+  then  $output
   else
   let $output1 := ( if ($output[$outputNum] is $list[$listNum]) (: 同じノードの場合 :)
                     then  
@@ -665,7 +736,7 @@ declare function axis:setDDOlist-Parantheses($output as node()*, $list as node()
 as node()*
 {
   if (fn:empty($list[$listNum]))
-  then  (fn:trace((),"DDO check"),$output)
+  then  $output
   else
     let $output1 := (
                         if($output[$outputNum] is $list[$listNum])  (: 同じノードの場合 :)
@@ -676,7 +747,7 @@ as node()*
                           axis:setDDOlist-Parantheses($output, $list, $outputNum + 1, $listNum, fn:false())
                         else if ($output[$outputNum] is axis:right())
                         then
-                        	$output
+                          $output
                         else if($flag)    (: ()内に新たに()の分岐が必要な場合 :)
                         then
                           let $nextoutputNum := axis:nextBranch($output, $outputNum + 1, 0)
@@ -750,43 +821,4 @@ as xs:integer
     axis:nextBranch($output, $outputNum + 1, $level)
 };
 
-declare function axis:output ($list as node()*, $num as xs:integer, $output as xs:string)
-as xs:string
-{
-  let $output1 := (
-    if (fn:empty($list[$num]))
-    then
-      $output
-    else
-      if (fn:name($list[$num]) = "left_separator")
-      then
-        let $output2 := axis:output($list, $num + 1, fn:concat($output, "("))
-        return $output2
-      else if (fn:name($list[$num]) = "right_separator")
-      then
-        if (fn:name($list[$num + 1]) = "right_separator")
-        then
-          let $output2 := axis:output($list, $num + 1, fn:concat($output, ")"))
-          return $output2
-        else
-          let $output2 := axis:output($list, $num + 1, fn:concat($output, "),"))
-          return $output2
-      else
-        if (fn:name($list[$num + 1]) = "left_separator" or fn:name($list[$num + 1]) = "right_separator")
-        then
-          let $output2 := axis:output($list, $num + 1, fn:concat($output, fn:name($list[$num])))
-          return $output2
-        else
-          let $output2 := axis:output($list, $num + 1, fn:concat($output, fn:name($list[$num]), ", "))
-          return $output2
-    )
-  return $output1
-
-};
-
-
-(:ここにファイル名を入力:)
-(:declare variable axis:original () := doc("../ex/Nasa/Nasa-r.xml");:)
-declare function axis:original () { doc("../ex/BaseBall/BaseBall-r.xml")};
-(:declare variable axis:original () := doc("../ex/Treebank/Treebank-r.xml");:)
-(:declare variable axis:original () := doc("../ex/DBLP/DBLP-r.xml");:)
+declare function axis:original () as node() { doc("../ex/BaseBall/BaseBall-r.xml") };
