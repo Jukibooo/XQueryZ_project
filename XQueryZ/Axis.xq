@@ -100,7 +100,6 @@ as node()*
 declare function axis:descendant-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((),"=================================="),
   let $resultList := axis:SearchDescendant(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
   return
@@ -129,7 +128,7 @@ as node()*
   let $current := $newList[fn:last()] (: カレントノード :)
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                    then  (fn:trace((),"get descendant"),ddo:setDDOlist($output, $newList, 1, 1)) (: TRIE木に登録 :)
+                    then  ddo:setDDOlist($output, $newList, 1, 1)(: TRIE木に登録 :)
                     else  $output
                   )
   return  (
@@ -534,8 +533,7 @@ as node()*
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   return  if ($current is $newNode)
-          then (
-  fn:trace((),"ROOP"),axis:SearchPreceding-parent(pointer:gotoparent($newList), $label, $output))
+          then  axis:SearchPreceding-parent(pointer:gotoparent($newList), $label, $output)
           else  let $output1 := ( 
                                   if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
                                   then  ddo:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
