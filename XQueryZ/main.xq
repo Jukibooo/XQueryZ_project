@@ -19,7 +19,7 @@ output:output(
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:descendant($v, "TEAM")
+return axis:following(axis:descendant($v, "reference"), "author") 
 
 (:====================================================:)
 ,
