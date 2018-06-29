@@ -13,16 +13,51 @@ import module "http://xqueryz/output" at "output.xq";
 declare namespace file = "http://xqueryz/file";
 import module "http://xqueryz/file" at "file.xq";
 
+declare namespace unranked = "http://xqueryz/unranked";
+import module "http://xqueryz/unranked" at "unranked.xq";
 
+declare namespace compressed = "http://xqueryz/compressed";
+import module "http://xqueryz/compressed" at "compressed.xq";
+
+
+(:
 output:output(
 
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:following(axis:descendant($v, "reference"), "author") 
+return axis:descendant($v, "PLAYER")
 
 (:====================================================:)
 ,
 1,
 "START -> "
+)
+:)
+
+(:
+unranked:output(
+
+(:=====================問合せ処理=======================:)
+
+for $v in $file:original/root/S/child::*[2]/*[1]
+return axis:descendant($v, "PLAYER") 
+
+(:====================================================:)
+,
+0
+,
+()
+)
+:)
+
+compressed:output(
+
+(:=====================問合せ処理=======================:)
+
+for $v in $file:original/root/S/child::*[2]/*[1]
+return axis:descendant($v, "reference") 
+
+(:====================================================:)
+
 )

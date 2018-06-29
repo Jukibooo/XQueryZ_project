@@ -59,7 +59,7 @@ as xs:integer
       getlist:exitParantheses($list, $num - 1, $level - 1)
     else if ($list[$num] is $separater:right)
     then
-      let $exitNum := getlist:exitParantheses ($list, $num - 1, $level + 1)
+      let $exitNum := getlist:exitParantheses($list, $num - 1, $level + 1)
       return $exitNum
     else if ($list[$num]/@type = "N" and $level = 0)
     then
