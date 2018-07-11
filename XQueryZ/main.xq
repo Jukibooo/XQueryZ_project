@@ -3,7 +3,7 @@ xquery version "1.0" encoding "utf-8";
 
 (: 軸処理するためのモジュール :)
 declare namespace axis = "http://xqueryz/axis";
-import module "http://xqueryz/axis" at "Axis.xq";
+import module "http://xqueryz/axis" at "axis.xq";
 
 (: 見やすいように出力するためのモジュール :)
 declare namespace output = "http://xqueryz/output";
@@ -12,6 +12,7 @@ import module "http://xqueryz/output" at "output.xq";
 (: 対象にする文書をimport :)
 declare namespace file = "http://xqueryz/file";
 import module "http://xqueryz/file" at "file.xq";
+
 
 declare namespace unranked = "http://xqueryz/unranked";
 import module "http://xqueryz/unranked" at "unranked.xq";
@@ -26,7 +27,7 @@ output:output(
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:descendant($v, "PLAYER")
+return axis:parent(axis:descendant($v, "reference"),"*")
 
 (:====================================================:)
 ,
@@ -35,13 +36,15 @@ return axis:descendant($v, "PLAYER")
 )
 :)
 
+
+
 (:
 unranked:output(
 
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:descendant($v, "PLAYER") 
+return axis:parent(axis:descendant($v, "reference"),"*")
 
 (:====================================================:)
 ,
@@ -51,13 +54,16 @@ return axis:descendant($v, "PLAYER")
 )
 :)
 
+
+
 compressed:output(
 
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:descendant($v, "reference") 
+return axis:parent(axis:descendant($v, "reference"),"*")
 
 (:====================================================:)
 
 )
+

@@ -13,14 +13,10 @@ declare function getlist:getList ($list as node()*, $num as xs:integer, $output 
 as node()*
 {
   if (fn:empty($list[$num]))
-  then
-    $output
-  else
-    if ($list[$num] is $separater:left)
-    then
-      getlist:getList($list, getlist:exitParantheses($list, $num - 1, 1), $output)
-    else
-      getlist:getList($list, $num - 1, ($list[$num], $output))
+  then  $output
+  else  if ($list[$num] is $separater:left)
+  then  getlist:getList($list, getlist:exitParantheses($list, $num - 1, 1), $output)
+  else  getlist:getList($list, $num - 1, ($list[$num], $output))
 };
 
 (:
@@ -50,41 +46,23 @@ as node()*
 declare function getlist:exitParantheses ($list as node()*, $num as xs:integer, $level as xs:integer)
 as xs:integer
 {
-  let $result := (
     if($num = 0)
-    then
-      0
+    then  0
     else if ($list[$num] is $separater:left)  (: "("が見つかればカッコの中 :)
-    then
-      getlist:exitParantheses($list, $num - 1, $level - 1)
-    else if ($list[$num] is $separater:right)
-    then
-      let $exitNum := getlist:exitParantheses($list, $num - 1, $level + 1)
-      return $exitNum
-    else if ($list[$num]/@type = "N" and $level = 0)
-    then
-      $num
-    else
-      getlist:exitParantheses($list, $num - 1, $level)
-  )
-  return $result
+    then  getlist:exitParantheses($list, $num - 1, $level - 1)
+    else if ($list[$num] is $separater:right) (: ")"のとき :)
+    then  getlist:exitParantheses($list, $num - 1, $level + 1)
+    else if ($list[$num]/@type = "N" and $level = 0) (: 非終端記号かつ分岐前である場合 :)
+    then  $num
+    else  getlist:exitParantheses($list, $num - 1, $level)
 };
 
 declare function getlist:searchTerminal ($list as node()*, $num as xs:integer)
 as xs:integer
 {
   if (fn:empty($list[$num]))
-  then
-    0
-  else
-    let $num1 := (
-                  if ($list[$num]/@type = "T")
-                  then
-                    $num
-                  else
-                    let $num2 := getlist:searchTerminal($list, $num + 1)
-                    return
-                      $num2
-                  )
-    return $num1
+  then  0
+  else  if ($list[$num]/@type = "T")
+        then  $num
+        else  getlist:searchTerminal($list, $num + 1)
 };

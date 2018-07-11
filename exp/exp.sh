@@ -51,10 +51,10 @@ plus_stack () {	# スタックサイズを足す関数
 }
 
 filename="Nasa.xml"
-query="//reference/following::author"
+query="//reference/parent::* (unranked)"
 
-heap=1024	# 初期ヒープサイズ指定
-stack=1024	# 初期スタックサイズ指定
+heap=124	# 初期ヒープサイズ指定
+stack=124	# 初期スタックサイズ指定
 
 ./XQueryZ.sh "$heap"m "$stack"m
 

@@ -19,11 +19,10 @@ as node()*
 {
 	let $newNum := getlist:searchTerminal($list, $num + 1)
 	return  if ($newNum = 0)	(: 0はこれ以上終端記号がないことを示す :)
-					then  $output
-					else  let $newlist := getlist:getList($list, $newNum, ())
-								let $output1 := ($output, unranked:create($newlist))
-								let $output2 := unranked:output($list, $newNum, $output1)
-				  			return  $output2
+			then  $output
+			else  let $newlist := getlist:getList($list, $newNum, ())
+				  let $output1 := ($output, unranked:create($newlist))
+				  return  unranked:output($list, $newNum, $output1)
 };
 
 declare function unranked:create ($list as node()*)

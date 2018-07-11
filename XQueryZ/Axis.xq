@@ -30,13 +30,9 @@ as node()*
   let $startNum := getlist:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
   return  let $resultList := axis:SearchChild(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
           let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return
-                  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:child-next($list, $newNum, $label, $resultList)
-                    return $output1
+          return  if ($newNum = 0)
+                  then  $resultList
+                  else  axis:child-next($list, $newNum, $label, $resultList)
 };
 
 (: 2個目以降のchild軸 :)
@@ -46,13 +42,9 @@ as node()*
 {
   let $resultList := axis:SearchChild(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
-  return
-    if ($newNum = 0)
-    then
-      $resultList
-    else
-      let $output1 := axis:child-next($list, $newNum, $label, $resultList)
-      return $output1
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:child-next($list, $newNum, $label, $resultList)
 };
 
 (: 実際にchildを探す関数 :)
@@ -90,11 +82,8 @@ as node()*
   return  let $resultList := axis:SearchDescendant(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しdescendantを探す :)
           let $newNum := getlist:searchTerminal($list, $startNum + 1)
           return  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:descendant-next($list, $newNum, $label, $resultList)
-                    return $output1
+                  then  $resultList
+                  else  axis:descendant-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:descendant-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -102,19 +91,15 @@ as node()*
 {
   let $resultList := axis:SearchDescendant(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
-  return
-    if ($newNum = 0)
-    then
-      $resultList
-    else
-      let $output1 := axis:descendant-next($list, $newNum, $label, $resultList)
-      return $output1
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:descendant-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:SearchDescendant ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := pointer:type-check-new($list) (: 非終端か変数　-> 終端 :)
+  let $newList := pointer:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if (fn:empty($current/*[1]))
           then $output
@@ -124,7 +109,7 @@ as node()*
 declare function axis:SearchDescendant-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := pointer:type-check-new($list) (: 非終端か変数　-> 終端 :)
+  let $newList := pointer:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
@@ -147,15 +132,11 @@ declare function axis:self ($list as node()*, $label as xs:string)
 as node()*
 {
   let $startNum := getlist:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
-  return  let $resultList := axis:SearchSelf(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return
-                  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:self-next($list, $newNum, $label, $resultList)
-                    return $output1
+  let $resultList := axis:SearchSelf(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
+  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:self-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:self-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -163,19 +144,15 @@ as node()*
 {
   let $resultList := axis:SearchSelf(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
-  return
-    if ($newNum = 0)
-    then
-      $resultList
-    else
-      let $output1 := axis:self-next($list, $newNum, $label, $resultList)
-      return $output1
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:self-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:SearchSelf ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := pointer:type-check-new($list) (: 非終端か変数　-> 終端 :)
+  let $newList := pointer:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
           then  ddo:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
@@ -187,14 +164,11 @@ declare function axis:descendant-or-self ($list as node()*, $label as xs:string)
 as node()*
 {
   let $startNum := getlist:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
-  return  let $resultList := axis:SearchDescendant(getlist:getList($list, $startNum, ()), $label, axis:self($list, $label)) (: getListでリストを作成しdescendantを探す :)
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:descendant-next($list, $newNum, $label, $resultList)
-                    return $output1
+  let $resultList := axis:SearchDescendant(getlist:getList($list, $startNum, ()), $label, axis:self($list, $label)) (: getListでリストを作成しdescendantを探す :)
+  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:descendant-next($list, $newNum, $label, $resultList)
 };
 
 (: parent軸 :)
@@ -203,15 +177,11 @@ declare function axis:parent ($list as node()*, $label as xs:string)
 as node()*
 {
     let $startNum := getlist:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
-    return  let $resultList := axis:SearchParent(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しparentを探す :)
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return
-                  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:parent-next($list, $newNum, $label, $resultList)
-                    return $output1
+    let $resultList := axis:SearchParent(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しparentを探す :)
+    let $newNum := getlist:searchTerminal($list, $startNum + 1)
+    return  if ($newNum = 0)
+            then  $resultList
+            else  axis:parent-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:parent-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -219,19 +189,15 @@ as node()*
 {
   let $resultList := axis:SearchParent(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しparentを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
-  return
-    if ($newNum = 0)
-    then
-      $resultList
-    else
-      let $output1 := axis:parent-next($list, $newNum, $label, $resultList)
-      return $output1
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:parent-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:SearchParent ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := pointer:gotoparent($list) (: 非終端か変数　-> 終端 :)
+  let $newList := pointer:gotoparent($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if ($current/@type = "root")
           then  if ($label = "*")
@@ -247,15 +213,11 @@ declare function axis:ancestor ($list as node()*, $label as xs:string)
 as node()*
 {
   let $startNum := getlist:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
-  return  let $resultList := axis:SearchAncestor(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return
-                  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:ancestor-next($list, $newNum, $label, $resultList)
-                    return $output1
+  let $resultList := axis:SearchAncestor(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
+  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:ancestor-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:ancestor-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -264,17 +226,14 @@ as node()*
   let $resultList := axis:SearchAncestor(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しparentを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
   return  if ($newNum = 0)
-          then
-            $resultList
-          else
-            let $output1 := axis:ancestor-next($list, $newNum, $label, $resultList)
-            return $output1
+          then  $resultList
+          else  axis:ancestor-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:SearchAncestor ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := pointer:gotoparent($list) (: 非終端か変数　-> 終端 :)
+  let $newList := pointer:gotoparent($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if ($current/@type = "root")
           then  $output
@@ -292,15 +251,11 @@ declare function axis:ancestor-or-self ($list as node()*, $label as xs:string)
 as node()*
 {
   let $startNum := getlist:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
-  return  let $resultList := axis:SearchAncestor(getlist:getList($list, $startNum, ()), $label, axis:self($list, $label)) (: getListでリストを作成しchildを探す :)
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return
-                  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:ancestor-next($list, $newNum, $label, $resultList)
-                    return $output1
+  let $resultList := axis:SearchAncestor(getlist:getList($list, $startNum, ()), $label, axis:self($list, $label)) (: getListでリストを作成しchildを探す :)
+  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:ancestor-next($list, $newNum, $label, $resultList)
 };
 
 (: following-sibling軸 :)
@@ -308,12 +263,11 @@ declare function axis:following-sibling ($list as node()*, $label as xs:string)
 as node()*
 {
   let $startNum := getlist:searchTerminal($list, 1)
-  return  let $resultList := axis:SearchFollowingSibling(getlist:getList($list, $startNum, ()), $label, ())
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return  if ($newNum = 0)
-                  then  $resultList
-                  else  let $output1 := axis:following-sibling-next($list, $newNum, $label, $resultList)
-                  return $output1
+  let $resultList := axis:SearchFollowingSibling(getlist:getList($list, $startNum, ()), $label, ())
+  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:following-sibling-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:following-sibling-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -323,8 +277,7 @@ as node()*
   let $newNum := getlist:searchTerminal($list, $num + 1)
   return  if ($newNum = 0)
           then  $resultList
-          else  let $output1 := axis:following-sibling-next($list, $newNum, $label, $resultList)
-                return $output1
+          else  axis:following-sibling-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:SearchFollowingSibling ($list as node()*, $label as xs:string, $output as node()*)
@@ -358,12 +311,11 @@ declare function axis:following ($list as node()*, $label as xs:string)
 as node()*
 {
   let $startNum := getlist:searchTerminal($list, 1)
-  return  let $resultList := axis:SearchFollowing(getlist:getList($list, $startNum, ()), $label, ())
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return  if ($newNum = 0)
-                  then  $resultList
-                  else  let $output1 := axis:following-next($list, $newNum, $label, $resultList)
-                  return $output1
+  let $resultList := axis:SearchFollowing(getlist:getList($list, $startNum, ()), $label, ())
+  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:following-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:following-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -373,8 +325,7 @@ as node()*
   let $newNum := getlist:searchTerminal($list, $num + 1)
   return  if ($newNum = 0)
           then  $resultList
-          else  let $output1 := axis:following-next($list, $newNum, $label, $resultList)
-                return $output1
+          else  axis:following-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:SearchFollowing ($list as node()*, $label as xs:string, $output as node()*)
@@ -420,15 +371,11 @@ as node()*
   let $startNum := getlist:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
   let $newList := getlist:getList($list, $startNum, ())
   let $parentlist := pointer:gotoparent($newList)
-  return  let $resultList := axis:SearchPrecedingSibling($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return
-                  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:preceding-sibling-next($list, $newNum, $label, $resultList)
-                    return $output1
+  let $resultList := axis:SearchPrecedingSibling($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
+  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:preceding-sibling-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:preceding-sibling-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -438,13 +385,9 @@ as node()*
   let $parentlist := pointer:gotoparent($newList)
   let $resultList := axis:SearchPrecedingSibling($parentlist, $label, $output, $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
-  return
-    if ($newNum = 0)
-    then
-      $resultList
-    else
-      let $output1 := axis:preceding-sibling-next($list, $newNum, $label, $resultList)
-      return $output1
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:preceding-sibling-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:SearchPrecedingSibling ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
@@ -483,15 +426,11 @@ as node()*
   let $startNum := getlist:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
   let $newList := getlist:getList($list, $startNum, ())
   let $parentlist := pointer:gotoparent($newList)
-  return  let $resultList := axis:SearchPreceding($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
-          let $newNum := getlist:searchTerminal($list, $startNum + 1)
-          return
-                  if ($newNum = 0)
-                  then
-                    $resultList
-                  else
-                    let $output1 := axis:preceding-next($list, $newNum, $label, $resultList)
-                    return $output1
+  let $resultList := axis:SearchPreceding($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
+  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:preceding-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:preceding-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -501,13 +440,9 @@ as node()*
   let $parentlist := pointer:gotoparent($newList)
   let $resultList := axis:SearchPreceding($parentlist, $label, $output, $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
-  return
-    if ($newNum = 0)
-    then
-      $resultList
-    else
-      let $output1 := axis:preceding-next($list, $newNum, $label, $resultList)
-      return $output1
+  return  if ($newNum = 0)
+          then  $resultList
+          else  axis:preceding-next($list, $newNum, $label, $resultList)
 };
 
 declare function axis:SearchPreceding ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
