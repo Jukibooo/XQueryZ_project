@@ -13,6 +13,7 @@ import module "http://xqueryz/file" at "file.xq";
 declare function pointer:type-check-new ($list as node()*)
 as node()*
 {
+  fn:trace((), "pointer:type-check-new"),
   (: 非終端記号の場合 :)
   if ($list[fn:last()]/@type = "N")
   then
@@ -40,6 +41,7 @@ as node()*
 declare function pointer:gotoparent ($list as node()*)
 as node()*
 {
+  fn:trace((), "pointer:gotoparent"),
   let $current := $list[fn:last()]
   let $output := (
                   if ($current/parent::*/@type = "N") (: 親が非終端記号の場合 :)(: rankがいくつの非終端記号によって変わる :)

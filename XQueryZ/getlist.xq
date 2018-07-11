@@ -12,6 +12,7 @@ import module "http://xqueryz/separater" at "separater.xq";
 declare function getlist:getList ($list as node()*, $num as xs:integer, $output as node()*)
 as node()*
 {
+  fn:trace((), "getlist:getList"),
   if (fn:empty($list[$num]))
   then  $output
   else  if ($list[$num] is $separater:left)
@@ -46,6 +47,7 @@ as node()*
 declare function getlist:exitParantheses ($list as node()*, $num as xs:integer, $level as xs:integer)
 as xs:integer
 {
+  fn:trace((), "getlist:exitParantheses"),
     if($num = 0)
     then  0
     else if ($list[$num] is $separater:left)  (: "("が見つかればカッコの中 :)
@@ -60,6 +62,7 @@ as xs:integer
 declare function getlist:searchTerminal ($list as node()*, $num as xs:integer)
 as xs:integer
 {
+  fn:trace((), "getlist:searchTerminal"),
   if (fn:empty($list[$num]))
   then  0
   else  if ($list[$num]/@type = "T")

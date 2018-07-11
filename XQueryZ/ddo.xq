@@ -11,6 +11,7 @@ import module "http://xqueryz/separater" at "separater.xq";
 declare function ddo:setDDOlist($output as node()*, $list as node()*, $outputNum as xs:integer, $listNum as xs:integer)
 as node()*  (: 返り値は登録後のリスト :)
 {
+  fn:trace((), "ddo:setDDOlist"),
   if (fn:empty($output))
   then $list
   else if (fn:empty($list[$listNum]))
@@ -35,6 +36,7 @@ as node()*  (: 返り値は登録後のリスト :)
 declare function ddo:setDDOlist-Parantheses($output as node()*, $list as node()*, $outputNum as xs:integer, $listNum as xs:integer, $flag as xs:boolean)
 as node()*
 {
+  fn:trace((), "ddo:setDDOlist-Parantheses"),
   if (fn:empty($list[$listNum]))
   then  $output
   else  if($output[$outputNum] is $list[$listNum])  (: 同じノードの場合 :)
@@ -62,6 +64,7 @@ as node()*
 declare function ddo:nextBranch ($output as node()*, $outputNum as xs:integer, $level as xs:integer)
 as xs:integer
 {
+  fn:trace((), "ddo:nextBranch"),
   if (fn:empty($output[$outputNum]))
   then  $outputNum
   else  if ($output[$outputNum] is $separater:right)

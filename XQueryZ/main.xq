@@ -3,7 +3,7 @@ xquery version "1.0" encoding "utf-8";
 
 (: 軸処理するためのモジュール :)
 declare namespace axis = "http://xqueryz/axis";
-import module "http://xqueryz/axis" at "axis.xq";
+import module "http://xqueryz/axis" at "Axis.xq";
 
 (: 見やすいように出力するためのモジュール :)
 declare namespace output = "http://xqueryz/output";
@@ -61,7 +61,7 @@ compressed:output(
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:parent(axis:descendant($v, "reference"),"*")
+return axis:child(axis:descendant($v, "reference"),"*")
 
 (:====================================================:)
 

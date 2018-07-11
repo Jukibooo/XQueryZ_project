@@ -16,6 +16,7 @@ import module "http://xqueryz/file" at "file.xq";
 declare function compressed:output($list as node()*) 
 as node()*
 {
+  fn:trace((), "compressed:output"),
   if(fn:empty($list))
   then ()
   else element {"root"} { compressed:start_output($list,(), 0) }
@@ -25,6 +26,7 @@ as node()*
 declare function compressed:start_output ($list as node()*, $start as node()*, $num as xs:integer)
 as node()*
 {
+  fn:trace((), "compressed:start_output"),
   let $newNum := getlist:searchTerminal($list, $num + 1)
   return  if ($newNum = 0)  (: 0はこれ以上終端記号がないことを示す :)
           then  (:starttreeをすべて登録できたら:)
@@ -48,6 +50,7 @@ as node()*
 declare function compressed:create_N($start as node()*, $list as node()*)
 as node()*
 {
+  fn:trace((), "compressed:create_N"),
   if($start)
   then
     let $list := compressed:N_list($start[1], $list)
@@ -61,6 +64,7 @@ as node()*
 declare function compressed:variable_replace2($current as node(), $pointer as node()*)
 as node()
 {
+  fn:trace((), "compressed:variable_replace2"),
     if(fn:name($current) = "y0")
     then
       compressed:variable_replace2($pointer[fn:count($pointer)]/*[1], fn:remove($pointer, fn:count($pointer)))
@@ -109,6 +113,7 @@ as node()
 declare function compressed:N_list($node as node(), $list as node()*)
 as node()*
 {
+  fn:trace((), "compressed:N_list"),
   let $N_list := for $non in $node/descendant::*[@type="N"]
                  return $file:original/*/*[name()=fn:name($non)]
   return (
@@ -123,6 +128,7 @@ as node()*
 declare function compressed:N_list-sub($node as node())
 as node()*
 {
+  fn:trace((), "compressed:N_list-sub"),
   let $N_list := for $non in $node/*[2]/descendant-or-self::*[@type="N"]
                  return $file:original/*/*[name()=fn:name($non)]
   return if(fn:empty($N_list))
