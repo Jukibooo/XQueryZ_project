@@ -27,7 +27,7 @@ import module "http://xqueryz/getlist" at "getlist.xq";
 declare function axis:child ($list as node()*, $label as xs:string)
 as node()*
 {
-  fn:trace((), "axis:child"),
+(:  fn:trace((), "axis:child"),:)
   let $startNum := getlist:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
   return  let $resultList := axis:SearchChild(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
           let $newNum := getlist:searchTerminal($list, $startNum + 1)
@@ -41,7 +41,7 @@ as node()*
 declare function axis:child-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:child-next"),
+(:  fn:trace((), "axis:child-next"),:)
   let $resultList := axis:SearchChild(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
   return  if ($newNum = 0)
@@ -54,7 +54,7 @@ as node()*
 declare function axis:SearchChild ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchChild"),
+(:  fn:trace((), "axis:SearchChild"),:)
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   return  if (fn:empty($current/*[1]))
@@ -66,12 +66,12 @@ as node()*
 declare function axis:SearchChild-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchChild-main"),
+(:  fn:trace((), "axis:SearchChild-main"),:)
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                    then  ddo:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                    then  ddo:lastsetDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
                     else  $output
                   )
   return  if (fn:empty($current/*[2]))
@@ -82,7 +82,7 @@ as node()*
 declare function axis:descendant ($list as node()*, $label as xs:string)
 as node()*
 {
-  fn:trace((), "axis:descendant"),
+(:  fn:trace((), "axis:descendant"),:)
   let $startNum := getlist:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
   return  let $resultList := axis:SearchDescendant(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しdescendantを探す :)
           let $newNum := getlist:searchTerminal($list, $startNum + 1)
@@ -94,7 +94,7 @@ as node()*
 declare function axis:descendant-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:descendant-next"),
+(:  fn:trace((), "axis:descendant-next"),:)
   let $resultList := axis:SearchDescendant(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $num + 1)
   return  if ($newNum = 0)
@@ -105,7 +105,7 @@ as node()*
 declare function axis:SearchDescendant ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchDescendant"),
+(:  fn:trace((), "axis:SearchDescendant"),:)
   let $newList := pointer:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if (fn:empty($current/*[1]))
@@ -116,12 +116,12 @@ as node()*
 declare function axis:SearchDescendant-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchDescendant-main"),
+(:  fn:trace((), "axis:SearchDescendant-main"),:)
   let $newList := pointer:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                    then  ddo:setDDOlist($output, $newList, 1, 1)(: TRIE木に登録 :)
+                    then  ddo:lastsetDDOlist($output, $newList, 1, 1)(: TRIE木に登録 :)
                     else  $output
                   )
   return  (

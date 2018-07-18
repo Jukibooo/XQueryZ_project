@@ -7,7 +7,7 @@ module namespace output = "http://xqueryz/output";
 declare function output:output ($list as node()*, $num as xs:integer, $output as xs:string)
 as xs:string
 {
-  fn:trace((), "output:output"),
+(:  fn:trace((), "output:output"),:)
     if (fn:empty($list[$num]))
     then  $output
     else  if (fn:name($list[$num]) = "left_separator")
