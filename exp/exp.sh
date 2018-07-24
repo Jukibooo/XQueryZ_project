@@ -50,8 +50,8 @@ plus_stack () {	# スタックサイズを足す関数
 	done
 }
 
-filename="Nasa.xml"
-query="//reference/parent::* (unranked)"
+filename=""
+query=""
 
 heap=124	# 初期ヒープサイズ指定
 stack=124	# 初期スタックサイズ指定
