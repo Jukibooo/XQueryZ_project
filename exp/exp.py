@@ -44,6 +44,8 @@ def main ():
 			file = open(path, 'w')
 			file.write(query + '\n\n' + result)
 			file.close()
+	else:
+		Signal('Finish', '')
 
 def Signal(file, query):
 
