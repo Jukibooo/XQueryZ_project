@@ -27,11 +27,13 @@ def main ():
 			count += 1
 
 			#ファイルの更新
-			file = open('../XQueryZ/main.xq', 'r+')
+			file = open('../XQueryZ/main.xq', 'r')
 			strings = file.read()
+			file.close()
 			string = strings.split('(:===///===:)')
 			string[1] = queries[query]
-			strings = string[0] + '(:===///===:)\n' + string[1] + '(:===///===:)' + string[2]
+			strings = string[0] + '(:===///===:)\n' + string[1] + '\n(:===///===:)' + string[2]
+			file = open('../XQueryZ/main.xq', 'w')
 			file.write(strings)
 			file.close()
 

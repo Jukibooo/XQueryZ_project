@@ -1,3 +1,5 @@
+#!/bin/sh
+
 minus_heap () {	# ヒープサイズを引く関数
 	heap=`expr $heap - $1`
 
