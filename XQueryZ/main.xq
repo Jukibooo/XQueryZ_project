@@ -27,7 +27,7 @@ output:output(
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:child(axis:descendant($v, "reference"),"*")
+return axis:child(axis:descendant($v, "field"),"*")
 
 (:====================================================:)
 ,
