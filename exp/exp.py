@@ -9,7 +9,7 @@ import sys
 filenames = ['Nasa.xml']
 
 #辞書に登録（問合せ）
-queries = { '//reference': 'axis:descendant($v, "reference")',
+queries = {
 					'//reference/child::source': 'axis:child(axis:descendant($v, "reference"), "source")',
 					'//reference/parent::*': 'axis:parent(axis:descendant($v, "reference"), "*")',
 					'//reference/follwing::tableHead': 'axis:following(axis:descendant($v, "reference"), "tableHead")',
