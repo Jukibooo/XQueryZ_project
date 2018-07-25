@@ -316,8 +316,8 @@ as node()*
 declare function axis:SearchFollowingSibling-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  (:fn:trace((), "axis:SearchFollowingSibling-main"),
-  let $newList := pointer:type-check-new($list):)
+  (:fn:trace((), "axis:SearchFollowingSibling-main"),:)
+  let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
