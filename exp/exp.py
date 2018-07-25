@@ -42,7 +42,7 @@ def main ():
 			path = '../result/commandoutput' + str(count)
 			result = subprocess.check_output("./exp.sh")
 			file = open(path, 'w')
-			file.write(query + '\n\n' + result)
+			file.write(str(query) + '\n\n' + str(result))
 			file.close()
 	else:
 		Signal('Finish', '')
