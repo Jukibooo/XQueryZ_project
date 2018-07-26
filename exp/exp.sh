@@ -55,8 +55,8 @@ plus_stack () {	# スタックサイズを足す関数
 filename=""
 query=""
 
-heap=1024	# 初期ヒープサイズ指定
-stack=1024	# 初期スタックサイズ指定
+heap=120	# 初期ヒープサイズ指定
+stack=120	# 初期スタックサイズ指定
 
 ./XQueryZ.sh "$heap"m "$stack"m
 
