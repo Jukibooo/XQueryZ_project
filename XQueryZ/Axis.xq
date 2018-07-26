@@ -139,7 +139,7 @@ as node()*
 declare function axis:self ($list as node()*, $label as xs:string)
 as node()*
 {
-  (:fn:trace((), "axis:self"),:)
+ (:fn:trace((), "axis:self"),:)
   let $startNum := getlist:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
   let $resultList := axis:SearchSelf(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $startNum + 1)
@@ -166,7 +166,7 @@ as node()*
   let $newList := pointer:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-          then  ddo:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+          then  ddo:lastsetDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
           else  $output
 };
 
@@ -216,10 +216,10 @@ as node()*
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if ($current/@type = "root")
           then  if ($label = "*")
-                then ddo:setDDOlist($output, $current/*[2], 1, 1)
+                then ddo:lastsetDDOlist($output, $current/*[2], 1, 1)
                 else $output
           else  if (fn:name($current) = $label or $label = "*")
-                then ddo:setDDOlist($output, $newList, 1, 1)
+                then ddo:lastsetDDOlist($output, $newList, 1, 1)
                 else $output
 };
 
@@ -257,7 +257,7 @@ as node()*
           then  $output
           else  let $output1 := (
                                  if (fn:name($current) = $label or $label = "*")
-                                 then ddo:setDDOlist($output, $newList, 1, 1)
+                                 then ddo:lastsetDDOlist($output, $newList, 1, 1)
                                  else $output
                                 )
                 return axis:SearchAncestor($newList, $label, $output1)
@@ -321,7 +321,7 @@ as node()*
   let $current := $newList[fn:last()]
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                    then  ddo:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                    then  ddo:lastsetDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
                     else  $output
                   )
   return  if (fn:empty($current/*[2]))
@@ -383,7 +383,7 @@ as node()*
   let $current := $newList[fn:last()]
   let $output1 := (
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                    then  ddo:setDDOlist($output, $newList, 1, 1)
+                    then  ddo:lastsetDDOlist($output, $newList, 1, 1)
                     else  $output
                   )
   let $output2 := axis:SearchDescendant($newList, $label, $output1)
@@ -396,7 +396,7 @@ as node()*
 declare function axis:preceding-sibling ($list as node()*, $label as xs:string)
 as node()*
 {
-  (:fn:trace((), "axis:preceding-sibling"),:)
+    (:fn:trace((), "axis:preceding-sibling"),:)
   let $startNum := getlist:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
   let $newList := getlist:getList($list, $startNum, ())
   let $parentlist := pointer:gotoparent($newList)
@@ -410,7 +410,7 @@ as node()*
 declare function axis:preceding-sibling-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
-  (:fn:trace((), "axis:preceding-sibling-next"),:)
+ (: fn:trace((), "axis:preceding-sibling-next"),:)
   let $newList := getlist:getList($list, $num, ())
   let $parentlist := pointer:gotoparent($newList)
   let $resultList := axis:SearchPrecedingSibling($parentlist, $label, $output, $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
@@ -436,7 +436,7 @@ as node()*
 declare function axis:SearchPrecedingSibling-main ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
 as node()*
 {
-    (:fn:trace((), "axis:SearchPrecedingSibling-main"),:)
+   (:fn:trace((), "axis:SearchPrecedingSibling-main"),:)
 
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
@@ -444,7 +444,7 @@ as node()*
           then $output
           else  let $output1 := ( 
                                   if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                                  then  ddo:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                                  then  ddo:lastsetDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
                                   else  $output
                                 )
                 return  if (fn:empty($current/*[2]))
@@ -510,7 +510,7 @@ as node()*
           then  axis:SearchPreceding-parent(pointer:gotoparent($newList), $label, $output)
           else  let $output1 := ( 
                                   if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
-                                  then  ddo:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
+                                  then  ddo:lastsetDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
                                   else  $output
                                 )
                 let $output2 := axis:SearchDescendant($newList, $label, $output1)
