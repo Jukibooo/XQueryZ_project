@@ -21,7 +21,7 @@ declare namespace compressed = "http://xqueryz/compressed";
 import module "http://xqueryz/compressed" at "compressed.xq";
 
 
-(:
+
 output:output(
 
 (:=====================問合せ処理=======================:)
@@ -29,14 +29,14 @@ output:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 
-axis:descendant($v, "reference")
+axis:ancestor(axis:descendant($v, "title"),"dataset")
 
 (:====================================================:)
 ,
 1,
 "START -> "
 )
-:)
+
 
 
 (:
@@ -55,7 +55,7 @@ return axis:parent(axis:descendant($v, "reference"),"*")
 )
 :)
 
-
+(:
 compressed:output(
 
 (:=====================問合せ処理=======================:)
@@ -63,10 +63,11 @@ compressed:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:descendant($v, "reference")
+axis:parent(axis:descendant($v, "reference"),"*")
 (:===///===:)
 
 (:====================================================:)
 
 )
+:)
 
