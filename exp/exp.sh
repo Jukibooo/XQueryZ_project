@@ -52,8 +52,8 @@ plus_stack () {	# スタックサイズを足す関数
 	done
 }
 
-filename=""
-query=""
+filename="$1"
+query="$2"
 
 heap=120	# 初期ヒープサイズ指定
 stack=120	# 初期スタックサイズ指定

@@ -10,12 +10,14 @@ filenames = ['Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					#'//reference/parent::*': 'axis:parent(axis:descendant($v, "reference"), "*")',
-					#'//reference/follwing::tableHead': 'axis:following(axis:descendant($v, "reference"), "tableHead")',
-					#'//author/ancestor::dataset': 'axis:ancestor(axis:descendant($v, "author"), "dataset")',
-					'//reference/child::source/child::other/child::title': 'axis:child(axis:child(axis:child(axis:descendant($v, "reference"), "source"), "other"), "title")',
-					'//field': 'axis:descendant($v, "field")'
-}
+					'//dataset': 'axis:descendant($v, "dataset")',
+					'//reference/self::*': 'axis:self(axis:descendant($v, "reference"), "*")',
+					'//reference/follwing::tableHead': 'axis:following(axis:descendant($v, "reference"), "tableHead")',
+					'//reference/preceding::tableHead': 'axis:preceding(axis:descendant($v, "reference"), "tableHead")',
+					'//reference/follwing-sibling::keyword': 'axis:following(axis:descendant($v, "reference"), "keyword")',
+					'//keyword/preceding-sibling::reference': 'axis:following(axis:descendant($v, "keyword"), "reference")',
+					'//author/ancestor::dataset': 'axis:ancestor(axis:descendant($v, "author"), "dataset")'
+			}
 
 def main ():
 	count = 0
@@ -37,9 +39,9 @@ def main ():
 			file.close()
 
 			#実験
-			Signal(filename, query)
+			#Signal(filename, query)
 			path = '../result/commandoutput' + str(count)
-			result = subprocess.check_output("./exp.sh")
+			result = subprocess.check_output("./exp.sh " + filename + " " + query)
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()

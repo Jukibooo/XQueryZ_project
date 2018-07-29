@@ -337,9 +337,9 @@ as node()*
   let $startNum := getlist:searchTerminal($list, 1)
   let $resultList := axis:SearchFollowing(getlist:getList($list, $startNum, ()), $label, ())
   let $newNum := getlist:searchTerminal($list, $startNum + 1)
-  return  if ($newNum = 0)
-          then  $resultList
-          else  axis:following-next($list, $newNum, $label, $resultList)
+  return  (:if ($newNum = 0)
+          then:)  $resultList
+          (:else  axis:following-next($list, $newNum, $label, $resultList):)
 };
 
 declare function axis:following-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
@@ -463,9 +463,9 @@ as node()*
   let $parentlist := pointer:gotoparent($newList)
   let $resultList := axis:SearchPreceding($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $startNum + 1)
-  return  if ($newNum = 0)
-          then  $resultList
-          else  axis:preceding-next($list, $newNum, $label, $resultList)
+  return  (:if ($newNum = 0)
+          then:)  $resultList
+          (:else  axis:preceding-next($list, $newNum, $label, $resultList):)
 };
 
 declare function axis:preceding-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
