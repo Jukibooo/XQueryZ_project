@@ -22,14 +22,14 @@ minus_stack () {	# スタックサイズを引く関数
 	do
 		stack=`expr $stack - $1`
 		echo "$heap , $stack"
-		./XQueryZ-test.sh "$heap"m 100m
+		./XQueryZ-test.sh "$heap"m "stack"m
 	done
 }
 
 plus_heap () {	# ヒープサイズを足す関数
 	heap=`expr $heap + $1`
 
-	./XQueryZ-test.sh "$heap"m "$stack"m
+	./XQueryZ-test.sh "$heap"m 100m
 
 	while [ "$?" -eq "1" ]
 	do

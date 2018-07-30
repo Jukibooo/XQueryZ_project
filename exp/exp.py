@@ -10,6 +10,7 @@ filenames = ['Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
+					'//dataset': 'axis:descendant($v, "dataset")',
 					'//reference/self::*': 'axis:self(axis:descendant($v, "reference"), "*")',
 					'//reference/follwing::tableHead': 'axis:following(axis:descendant($v, "reference"), "tableHead")',
 					'//reference/preceding::tableHead': 'axis:preceding(axis:descendant($v, "reference"), "tableHead")',
