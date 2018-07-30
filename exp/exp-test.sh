@@ -56,9 +56,9 @@ filename="$1"
 query="$2"
 
 heap=120	# 初期ヒープサイズ指定
-stack=1	# 初期スタックサイズ指定
+stack=0	# 初期スタックサイズ指定
 
-./XQueryZ-test.sh "$heap"m "$stack"m
+./XQueryZ-test.sh "$heap"m 100m
 
 if [ "$?" -eq "1" ]	# 実行失敗(1)したら
 then
