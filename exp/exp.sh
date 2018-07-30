@@ -3,26 +3,26 @@
 minus_heap () {	# ヒープサイズを引く関数
 	heap=`expr $heap - $1`
 
-	./XQueryZ.sh "$heap"m "$stack"m
+	./XQueryZ.sh "$heap"m 100m
 
 	while [ "$?" -eq "0" ]
 	do
 		heap=`expr $heap - $1`
 		echo "$heap , $stack"
-		./XQueryZ.sh "$heap"m "$stack"m
+		./XQueryZ.sh "$heap"m 100m
 	done
 }
 
 minus_stack () {	# スタックサイズを引く関数
 	stack=`expr $stack - $1`
 
-	./XQueryZ.sh "$heap"m "$stack"m
+	./XQueryZ.sh "$heap"m 100m
 
 	while [ "$?" -eq "0" ]
 	do
 		stack=`expr $stack - $1`
 		echo "$heap , $stack"
-		./XQueryZ.sh "$heap"m "$stack"m
+		./XQueryZ.sh "$heap"m 100m
 	done
 }
 
@@ -56,7 +56,7 @@ filename="$1"
 query="$2"
 
 heap=120	# 初期ヒープサイズ指定
-stack=120	# 初期スタックサイズ指定
+stack=0	# 初期スタックサイズ指定
 
 ./XQueryZ.sh "$heap"m "$stack"m
 
@@ -67,10 +67,6 @@ then
 	minus_heap 10
 
 	plus_heap 1
-
-	plus_stack 100
-
-	minus_stack 10
 
 	plus_stack 1
 
@@ -86,13 +82,7 @@ else	# 実行成功(0)したら
 
 	heap=`expr $heap + 1`
 
-	minus_stack 100
-
-	plus_stack 10
-
-	minus_stack 1
-
-	stack=`expr $stack + 1` 
+	plus_stack 1
 
 	python3 finish_signal.py "${filename}" "${query}" "$heap" "$stack"
 
