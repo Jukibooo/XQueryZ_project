@@ -458,7 +458,7 @@ declare function axis:preceding ($list as node()*, $label as xs:string)
 as node()*
 {
       (:fn:trace((), "axis:preceding"),:)
-  let $startNum := getlist:searchTerminal($list, 1)  (: 最初に対象とするノードを記憶 :)
+  let $startNum := getlist:lastsearchTerminal($list, fn:count($list))  (: 最初に対象とするノードを記憶 :)
   let $newList := getlist:getList($list, $startNum, ())
   let $parentlist := pointer:gotoparent($newList)
   let $resultList := axis:SearchPreceding($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)

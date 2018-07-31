@@ -69,3 +69,14 @@ as xs:integer
         then  $num
         else  getlist:searchTerminal($list, $num + 1)
 };
+
+declare function getlist:lastsearchTerminal ($list as node()*, $num as xs:integer)
+as xs:integer
+{
+(:  fn:trace((), "getlist:searchTerminal"),:)
+  if (fn:empty($list[$num]))
+  then  0
+  else  if ($list[$num]/@type = "T")
+        then  $num
+        else  getlist:searchTerminal($list, $num - 1)
+};

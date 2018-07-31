@@ -10,12 +10,7 @@ filenames = ['Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'//reference/self::*': 'axis:self(axis:descendant($v, "reference"), "*")',
-					'//reference/follwing::tableHead': 'axis:following(axis:descendant($v, "reference"), "tableHead")',
-					'//reference/preceding::tableHead': 'axis:preceding(axis:descendant($v, "reference"), "tableHead")',
-					'//reference/follwing-sibling::keyword': 'axis:following(axis:descendant($v, "reference"), "keyword")',
-					'//keyword/preceding-sibling::reference': 'axis:following(axis:descendant($v, "keyword"), "reference")',
-					'//author/ancestor::dataset': 'axis:ancestor(axis:descendant($v, "author"), "dataset")'
+					'//reference/preceding::tableHead': 'axis:preceding(axis:descendant($v, "reference"), "tableHead")'
 			}
 
 def main ():
