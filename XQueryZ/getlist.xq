@@ -78,5 +78,5 @@ as xs:integer
   then  0
   else  if ($list[$num]/@type = "T")
         then  $num
-        else  getlist:searchTerminal($list, $num - 1)
+        else  getlist:lastsearchTerminal($list, $num - 1)
 };
