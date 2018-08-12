@@ -270,7 +270,7 @@ as node()*
 declare function local:SearchDescendant ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := local:type-check-new($list) (: 非終端か変数　-> 終端 :)
+  let $newList := local:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if (fn:empty($current/*[1]))
           then $output
@@ -280,7 +280,7 @@ as node()*
 declare function local:SearchDescendant-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := local:type-check-new($list) (: 非終端か変数　-> 終端 :)
+  let $newList := local:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   let $output1 := ( 
                     if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
@@ -331,7 +331,7 @@ as node()*
 declare function local:SearchSelf ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := local:type-check-new($list) (: 非終端か変数　-> 終端 :)
+  let $newList := local:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if (fn:name($current) = $label or ($label = "*" and fn:name($current) != "_"))
           then  local:setDDOlist($output, $newList, 1, 1) (: TRIE木に登録 :)
@@ -387,7 +387,7 @@ as node()*
 declare function local:SearchParent ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := local:gotoparent($list) (: 非終端か変数　-> 終端 :)
+  let $newList := local:gotoparent($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if ($current/@type = "root")
           then  if ($label = "*")
@@ -430,7 +430,7 @@ as node()*
 declare function local:SearchAncestor ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  let $newList := local:gotoparent($list) (: 非終端か変数　-> 終端 :)
+  let $newList := local:gotoparent($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if ($current/@type = "root")
           then  $output

@@ -6,11 +6,11 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['DBLP.xml']
+filenames = ['../ex/DBLP/DBLP.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'//author': 'axis:descendant($v, "author")'
+					'$v/descendant::author': 'axis:descendant($v, "author")'
 			}
 
 def main ():
@@ -21,6 +21,10 @@ def main ():
 		for query in queries:
 			count += 1
 
+			
+			###圧縮文書に対する問い合わせ
+
+			'''
 			#ファイルの更新
 			file = open('../XQueryZ/main.xq', 'r')
 			strings = file.read()
@@ -39,6 +43,32 @@ def main ():
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()
+			'''
+			
+			
+			###非圧縮文書に対する問い合わせ
+
+			#ファイルの更新
+			file = open('../XQueryZ/main-original.xq', 'r')
+			strings = file.read()
+			file.close()
+			string = strings.split('(:===///===:)')
+			string[1] = str('doc("' + filename + '")')
+			string[3] = str(query)
+			strings = string[0] + '(:===///===:)\n' + string[1] + '\n(:===///===:)' + string[2] + '(:===///===:)\n' + string[3] + '\n(:===///===:)'
+			file = open('../XQueryZ/main-original.xq', 'w')
+			file.write(strings)
+			file.close()
+
+			#実験
+			#Signal(filename, query)
+			path = '../result/commandoutput-original' + str(count)
+			result = subprocess.check_output(["./exp.sh", filename+'-original', query])
+			file = open(path, 'w')
+			file.write(str(query) + '\n\n' + str(result))
+			file.close()
+
+
 	else:
 		Signal('Finish', '')
 
