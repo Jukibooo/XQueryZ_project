@@ -334,9 +334,10 @@ declare function axis:following ($list as node()*, $label as xs:string)
 as node()*
 {
   (:fn:trace((), "axis:following"),:)
-  let $startNum := getlist:searchTerminal($list, 1)
-  let $resultList := axis:SearchFollowing(getlist:getList($list, $startNum, ()), $label, ())
-  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  let $list1 := axis:self($list, "*")
+  let $startNum := getlist:searchTerminal($list1, 1)
+  let $resultList := axis:SearchFollowing(getlist:getList($list1, $startNum, ()), $label, ())
+  let $newNum := getlist:searchTerminal($list1, $startNum + 1)
   return  (:if ($newNum = 0)
           then:)  $resultList
           (:else  axis:following-next($list, $newNum, $label, $resultList):)
@@ -458,11 +459,12 @@ declare function axis:preceding ($list as node()*, $label as xs:string)
 as node()*
 {
       (:fn:trace((), "axis:preceding"),:)
-  let $startNum := getlist:lastsearchTerminal($list, fn:count($list))  (: 最初に対象とするノードを記憶 :)
-  let $newList := getlist:getList($list, $startNum, ())
+  let $list1 := axis:self($list, "*")
+  let $startNum := getlist:lastsearchTerminal($list1, fn:count($list1))  (: 最初に対象とするノードを記憶 :)
+  let $newList := getlist:getList($list1, $startNum, ())
   let $parentlist := pointer:gotoparent($newList)
   let $resultList := axis:SearchPreceding($parentlist, $label, (), $newList[fn:last()]) (: getListでリストを作成しchildを探す :)
-  let $newNum := getlist:searchTerminal($list, $startNum + 1)
+  let $newNum := getlist:searchTerminal($list1, $startNum + 1)
   return  (:if ($newNum = 0)
           then:)  $resultList
           (:else  axis:preceding-next($list, $newNum, $label, $resultList):)

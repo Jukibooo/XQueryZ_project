@@ -6,11 +6,12 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/DBLP/DBLP.xml']
+filenames = ['../ex/Nasa/Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::author': 'axis:descendant($v, "author")'
+					'$v/descendant::reference/parent::dataset': 'axis:parent(axis:descendant($v, "author"),"dataset")'
+
 			}
 
 def main ():
@@ -24,7 +25,6 @@ def main ():
 			
 			###圧縮文書に対する問い合わせ
 
-			'''
 			#ファイルの更新
 			file = open('../XQueryZ/main.xq', 'r')
 			strings = file.read()
@@ -43,11 +43,10 @@ def main ():
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()
-			'''
 			
 			
 			###非圧縮文書に対する問い合わせ
-
+			'''
 			#ファイルの更新
 			file = open('../XQueryZ/main-original.xq', 'r')
 			strings = file.read()
@@ -67,8 +66,7 @@ def main ():
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()
-
-
+			'''
 	else:
 		Signal('Finish', '')
 

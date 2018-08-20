@@ -29,13 +29,16 @@ output:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 
-axis:descendant($v, "title")
+(:====================================================:)
+
+axis:parent(axis:descendant($v, "reference"),"dataset")
 
 (:====================================================:)
 ,
 1,
 "START -> "
 )
+
 
 
 
@@ -63,7 +66,7 @@ compressed:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:parent(axis:descendant($v, "reference"),"*")
+axis:parent(axis:descendant($v, "author"),"dataset")
 (:===///===:)
 
 (:====================================================:)
