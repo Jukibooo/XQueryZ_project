@@ -10,7 +10,7 @@ filenames = ['../ex/Nasa/Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::dataset/following::title': 'axis:folllowing(axis:descendant($v, "dataset"),"title")',
+					'$v/descendant::dataset/following::title': 'axis:following(axis:descendant($v, "dataset"),"title")',
 					'$v/descendant::title': 'axis:descendant($v, "title")',
 					'$v/descendant::tableHead': 'axis:descendant($v, "tableHead")',
 					'$v/descendant::fields/patent::tableHead': 'axis:parent(axis:descendant($v, "fields"),"tableHead")',
