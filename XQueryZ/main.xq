@@ -65,7 +65,7 @@ compressed:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:parent(axis:descendant($v, "author"),"dataset")
+axis:following-sibling(axis:descendant($v, "title"), "publisher")
 (:===///===:)
 
 (:====================================================:)

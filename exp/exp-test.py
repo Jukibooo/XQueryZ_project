@@ -10,8 +10,6 @@ filenames = ['Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::publisher': 'axis:descendant($v, "publisher")',
-					'$v/descendant::title/following-sibling::publisher': 'axis:following-sibling(axis:descendant($v, "title"), "publisher")',
 					'$v/descendant::field': 'axis:descendant($v, "field")',
 					'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
 					'$v/descendant::history': 'axis:descendant($v, "history")',
