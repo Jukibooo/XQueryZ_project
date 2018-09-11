@@ -10,10 +10,9 @@ filenames = ['Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::field': 'axis:descendant($v, "field")',
-					'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
 					'$v/descendant::history': 'axis:descendant($v, "history")',
-					'$v/descendant::creator/ancestor::history': 'axis:ancestor(axis:descendant($v, "creator"), "history")'
+					'$v/descendant::creator/ancestor::history': 'axis:ancestor(axis:descendant($v, "creator"), "history")',
+					'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")'
 			}
 
 def main ():
