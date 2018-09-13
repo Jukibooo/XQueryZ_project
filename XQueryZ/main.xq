@@ -58,18 +58,18 @@ return axis:parent(axis:descendant($v, "reference"),"*")
 :)
 
 
-compressed:output(
+(: compressed:output( :)
 
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:following-sibling(axis:descendant($v, "title"), "publisher")
+axis:parent(axis:descendant($v, "units"), "field")
 (:===///===:)
 
 (:====================================================:)
 
-)
+(: ) :)
 
 
