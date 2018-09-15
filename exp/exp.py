@@ -52,11 +52,11 @@ def main ():
 
 			#実験
 			#Signal(filename, query)
-			#path = '../result/commandoutput' + str(count)
-			#result = subprocess.check_output(["./exp.sh", filename, query])
-			#file = open(path, 'w')
-			#file.write(str(query) + '\n\n' + str(result))
-			#file.close()
+			path = '../result/commandoutput' + str(count)
+			result = subprocess.check_output(["./exp.sh", filename, query])
+			file = open(path, 'w')
+			file.write(str(query) + '\n\n' + str(result))
+			file.close()
 			
 			
 			###非圧縮文書に対する問い合わせ
