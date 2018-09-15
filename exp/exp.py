@@ -10,9 +10,6 @@ filenames = ['../ex/Nasa/Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					
-					'$v/descendant::publisher': 'axis:descendant($v, "publisher")',
-					'$v/descendant::reference': 'axis:descendant($v, "reference")',
 					'$v/descendant::dataset': 'axis:descendant($v, "dataset")',
 					'$v/descendant::title': 'axis:descendant($v, "title")',
 					'$v/descendant::tableHead': 'axis:descendant($v, "tableHead")',
@@ -55,11 +52,11 @@ def main ():
 
 			#実験
 			#Signal(filename, query)
-			path = '../result/commandoutput' + str(count)
-			result = subprocess.check_output(["./exp.sh", filename, query])
-			file = open(path, 'w')
-			file.write(str(query) + '\n\n' + str(result))
-			file.close()
+			#path = '../result/commandoutput' + str(count)
+			#result = subprocess.check_output(["./exp.sh", filename, query])
+			#file = open(path, 'w')
+			#file.write(str(query) + '\n\n' + str(result))
+			#file.close()
 			
 			
 			###非圧縮文書に対する問い合わせ
