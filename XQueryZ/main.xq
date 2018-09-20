@@ -65,7 +65,7 @@ return axis:parent(axis:descendant($v, "reference"),"*")
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:parent(axis:descendant($v, "units"), "field")
+axis:descendant($v, "creator")
 (:===///===:)
 
 (:====================================================:)
