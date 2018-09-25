@@ -17,19 +17,37 @@ import module "http://xqueryz/pointer" at "pointer.xq";
 declare function unranked:output ($list as node()*, $num as xs:integer, $output as node()*)
 as node()*
 {
-	fn:trace((), "unranked:output"),
+	(:fn:trace((), "unranked:output"),:)
 	let $newNum := getlist:searchTerminal($list, $num + 1)
 	return  if ($newNum = 0)	(: 0はこれ以上終端記号がないことを示す :)
 			then  $output
 			else  let $newlist := getlist:getList($list, $newNum, ())
-				  let $output1 := ($output, unranked:create($newlist))
+				  let $output1 := ($output, unranked:create-first($newlist))
 				  return  unranked:output($list, $newNum, $output1)
+};
+
+declare function unranked:create-first ($list as node()*)
+as node()*
+{
+	(:fn:trace((), "unranked:create"),:)
+	let $newlist := pointer:type-check-new($list)
+	let $current := $newlist[fn:last()]
+	return  if (fn:name($current) = "_")
+			then  ()
+			else (
+				element {fn:name($current)} { 
+				(:first-child:)
+          			if(fn:empty($current/*[1]))
+          			then ()
+          			else unranked:create(($newlist[fn:position() < fn:last()], $current/*[1]))
+         		}
+         )
 };
 
 declare function unranked:create ($list as node()*)
 as node()*
 {
-	fn:trace((), "unranked:create"),
+	(:fn:trace((), "unranked:create"),:)
 	let $newlist := pointer:type-check-new($list)
 	let $current := $newlist[fn:last()]
 	return  if (fn:name($current) = "_")

@@ -41,13 +41,16 @@ axis:parent(axis:descendant($v, "reference"),"dataset")
 
 
 
-(:
+
 unranked:output(
 
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:parent(axis:descendant($v, "reference"),"*")
+return 
+(:===///===:)
+axis:descendant($v, "reference")
+(:===///===:)
 
 (:====================================================:)
 ,
@@ -55,21 +58,21 @@ return axis:parent(axis:descendant($v, "reference"),"*")
 ,
 ()
 )
-:)
 
 
-(: compressed:output( :)
+
+(: compressed:output( 
 
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
-(:===///===:)
+
 axis:descendant($v, "creator")
-(:===///===:)
+
 
 (:====================================================:)
 
-(: ) :)
+) :)
 
 
