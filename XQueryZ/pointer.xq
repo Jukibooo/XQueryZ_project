@@ -47,18 +47,17 @@ as node()*
                   if ($current/parent::*/@type = "N") (: 親が非終端記号の場合 :)(: rankがいくつの非終端記号によって変わる :)
                   then
                     if(fn:count($current/preceding-sibling::*) = 0)
-                    then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, fn:root($current)/*/*[name()=fn:name($current/parent::*)]/*[2]//y0[@type="V"]))
+                    then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y0[@type="V"]))
                     else if(fn:count($current/preceding-sibling::*) = 1)
-                    then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, fn:root($current)/*/*[name()=fn:name($current/parent::*)]/*[2]//y1[@type="V"]))
+                    then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y1[@type="V"]))
                     else if(fn:count($current/preceding-sibling::*) = 2)
-                    then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, fn:root($current)/*/*[name()=fn:name($current/parent::*)]/*[2]//y2[@type="V"]))
+                    then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y2[@type="V"]))
                     else if(fn:count($current/preceding-sibling::*) = 3)
-                    then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, fn:root($current)/*/*[name()=fn:name($current/parent::*)]/*[2]//y3[@type="V"]))
+                    then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y3[@type="V"]))
                     else ()
                   else if($current/parent::*/@type="N_root")  (: 親が非終端記号の部分木の頂点の場合 :)
                   then
-                    let $current1 := $list[fn:last() - 1]
-                    return  pointer:gotoparent($list[fn:position() < fn:last()])
+                    pointer:gotoparent($list[fn:position() < fn:last()])
                   else  (: 親が終端記号の場合 :)
                     if($current is $current/parent::*/*[1]) (: first child or next sibling:)
                     then  ($list[fn:position() < fn:last()], $current/parent::*)
