@@ -5,6 +5,9 @@ xquery version "1.0" encoding "utf-8";
 declare namespace axis = "http://xqueryz/axis";
 import module "http://xqueryz/axis" at "Axis.xq";
 
+declare namespace axis-binary = "http://xqueryz/axis-binary";
+import module "http://xqueryz/axis-binary" at "axis-binary.xq";
+
 (: 見やすいように出力するためのモジュール :)
 declare namespace output = "http://xqueryz/output";
 import module "http://xqueryz/output" at "output.xq";
@@ -39,7 +42,8 @@ axis:parent(axis:descendant($v, "reference"),"dataset")
 
 :)
 
-
+for $v in $file:original/*/*
+return axis-binary:ancestor(axis-binary:descendant($v, "source"), "dataset")
 
 (:
 unranked:output(
@@ -47,6 +51,8 @@ unranked:output(
 (:=====================問合せ処理=======================:)
 
 :)
+
+(:
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
@@ -60,7 +66,7 @@ axis:ancestor(axis:descendant($v, "source"), "dataset")
 ()
 )
 :)
-
+:)
 
 
 (: compressed:output( 

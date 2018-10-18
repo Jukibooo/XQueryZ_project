@@ -1,6 +1,7 @@
-declare function local:binarytree ($v as node()* )
-as node()*
+declare function local:binarytree ($v as node())
+as node()
 {
+  (:)
   (:left child:)
   if($v/node())		(:children exist:)
   then
@@ -56,9 +57,29 @@ as node()*
       attribute left {"0"}, attribute right {"0"}
     }
   )
+  :)
+
+  element {fn:name($v)} { 
+
+    if (fn:empty($v/*))
+    then
+      element _ {  }
+    else
+      local:binarytree($v/*[1])
+      
+    ,
+    if (fn:empty($v/following-sibling::*))
+    then
+      element _ {  }
+    else
+      local:binarytree($v/following-sibling::*[1])
+      
+
+   }
   
 };
 
-for $root in doc("student.xml")
-return
-  local:binarytree($root)
+for $root in doc("../ex/Nasa/Nasa-n.xml")
+return element root {  
+  local:binarytree($root/*)
+}
