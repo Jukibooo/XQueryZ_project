@@ -41,23 +41,25 @@ axis:parent(axis:descendant($v, "reference"),"dataset")
 
 
 
-
+(:
 unranked:output(
 
 (:=====================問合せ処理=======================:)
 
+:)
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:ancestor(axis:descendant($v, "reference"), "dataset")
+axis:ancestor(axis:descendant($v, "source"), "dataset")
 (:===///===:)
-
+(:
 (:====================================================:)
 ,
 0
 ,
 ()
 )
+:)
 
 
 

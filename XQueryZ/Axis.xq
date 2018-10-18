@@ -229,6 +229,7 @@ as node()*
 {
   (:fn:trace((), "axis:ancestor"),:)
   let $startNum := getlist:searchTerminal($list, 1) (:最初に対象とするノードを記憶:)
+  (:let $startNum := getlist:lastsearchTerminal($list, fn:count($list)):)
   let $resultList := axis:SearchAncestor(getlist:getList($list, $startNum, ()), $label, ()) (: getListでリストを作成しchildを探す :)
   let $newNum := getlist:searchTerminal($list, $startNum + 1)
   return  if ($newNum = 0)
@@ -261,6 +262,11 @@ as node()*
                                  else $output
                                 )
                 return axis:SearchAncestor($newList, $label, $output1)
+                (:
+                if (fn:name($current) = $label or $label = "*")
+                then ddo:lastsetDDOlist($output, $newList, 1, 1)
+                else axis:SearchAncestor($newList, $label, $output)
+                :)
                 
 };
 
