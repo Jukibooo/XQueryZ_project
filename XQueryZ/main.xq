@@ -41,10 +41,13 @@ axis:parent(axis:descendant($v, "reference"),"dataset")
 )
 
 :)
-
+output:output(
 for $v in $file:original/*/*
-return axis-binary:ancestor(axis-binary:descendant($v, "source"), "dataset")
-
+return axis-binary:descendant($v, "source")
+,
+1,
+"START -> "
+)
 (:
 unranked:output(
 
@@ -56,7 +59,7 @@ unranked:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:ancestor(axis:descendant($v, "source"), "dataset")
+axis:ancestor(axis:descendant($v, "source"), "reference")
 (:===///===:)
 (:
 (:====================================================:)

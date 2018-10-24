@@ -43,7 +43,7 @@ as node()*
 {
 (:  fn:trace((), "pointer:gotoparent"),:)
   let $current := $list[fn:last()]
-  let $output := (
+  return
                   if ($current/parent::*/@type = "N") (: 親が非終端記号の場合 :)(: rankがいくつの非終端記号によって変わる :)
                   then
                     if(fn:count($current/preceding-sibling::*) = 0)
@@ -62,8 +62,5 @@ as node()*
                     if($current is $current/parent::*/*[1]) (: first child or next sibling:)
                     then  ($list[fn:position() < fn:last()], $current/parent::*)
                     else  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*))
-
-      )
-  return $output
 };
 
