@@ -81,19 +81,20 @@ as node()*
 {
 	if (fn:name($list) = "root")
 	then $output
-	else (:let $output1 := (if (fn:name($list) = $label or $label = "*")
+	else let $output1 := (if (fn:name($list) = $label or $label = "*")
 			 									then axis-binary:ddo($output, $list, fn:count($output))
 			 									else $output
 			 								 )
-				return axis-binary:searchAncestor(axis-binary:gotoparent($list), $label, $output1):)
-				if (fn:name($list) = $label or $label = "*")
+				return axis-binary:searchAncestor(axis-binary:gotoparent($list), $label, $output1)
+				(:if (fn:name($list) = $label or $label = "*")
 				then axis-binary:ddo($output, $list, fn:count($output))
-				else axis-binary:searchAncestor(axis-binary:gotoparent($list), $label, $output)
+				else axis-binary:searchAncestor(axis-binary:gotoparent($list), $label, $output):)
 };
 
 declare function axis-binary:gotoparent ($list as node())
 as node()
 {
+	fn:trace((), "gotoparent"),
 	if ($list/parent::*/*[1] is $list)
 	then $list/parent::*
 	else axis-binary:gotoparent($list/parent::*)

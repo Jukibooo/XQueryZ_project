@@ -43,7 +43,7 @@ axis:parent(axis:descendant($v, "reference"),"dataset")
 :)
 
 for $v in $file:original/*/*
-return axis-binary:ancestor(axis-binary:descendant($v, "source"), "dataset")
+return axis-binary:ancestor(axis-binary:descendant($v, "reference"), "dataset")
 
 (:
 unranked:output(
