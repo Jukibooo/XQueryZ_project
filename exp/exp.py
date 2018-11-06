@@ -10,25 +10,24 @@ filenames = ['../ex/Nasa/Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::publisher': 'axis:descendant($v, "publisher")',
-					'$v/descendant::reference': 'axis:descendant($v, "reference")',
-					'$v/descendant::dataset': 'axis:descendant($v, "dataset")',
-					'$v/descendant::title': 'axis:descendant($v, "title")',
-					'$v/descendant::tableHead': 'axis:descendant($v, "tableHead")',
-					'$v/descendant::history': 'axis:descendant($v, "publisher")',
-					'$v/descendant::field': 'axis:descendant($v, "field")',
-					'$v/descendant::title/following-sibling::publisher': 'axis:following-sibling(axis:descendant($v, "title"), "publisher")',
+					#'$v/descendant::publisher': 'axis:descendant($v, "publisher")',
+					#'$v/descendant::reference': 'axis:descendant($v, "reference")',
+					#'$v/descendant::dataset': 'axis:descendant($v, "dataset")',
+					#'$v/descendant::title': 'axis:descendant($v, "title")',
+					#'$v/descendant::tableHead': 'axis:descendant($v, "tableHead")',
+					#'$v/descendant::history': 'axis:descendant($v, "publisher")',
+					#'$v/descendant::field': 'axis:descendant($v, "field")',
+					#'$v/descendant::title/following-sibling::publisher': 'axis:following-sibling(axis:descendant($v, "title"), "publisher")',
 					'$v/descendant::author/ancestor::reference': 'axis:ancestor(axis:descendant($v, "author"), "reference")',
 					'$v/descendant::reference/parent::dataset': 'axis:parent(axis:descendant($v, "reference"), "dataset")',
-					'$v/descendant::dataset/following::title': 'axis:following(axis:descendant($v, "dataset"), "title")',
-					'$v/descendant::fields/patent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
+					#'$v/descendant::dataset/following::title': 'axis:following(axis:descendant($v, "dataset"), "title")',
 					'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
 					'$v/descendant::creator/ancestor::history': 'axis:ancestor(axis:descendant($v, "creator"), "history")',
-					'$v/descendant::creator': 'axis:descendant($v, "creator")',
-					'$v/descendant::date/preceding-sibling::creator': 'axis:preceding-sibling(axis:descendant($v, "date"), "creator")',
-					'$v/descendant::altname': 'axis:descendant($v, "altname")',
-					'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")'
-
+					#'$v/descendant::creator': 'axis:descendant($v, "creator")',
+					#'$v/descendant::date/preceding-sibling::creator': 'axis:preceding-sibling(axis:descendant($v, "date"), "creator")',
+					#'$v/descendant::altname': 'axis:descendant($v, "altname")',
+					#'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
+					'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
 
 
 

@@ -183,8 +183,35 @@ as node()*
           else  axis:descendant-next($list, $newNum, $label, $resultList)
 };
 
-(: parent軸 :)
+(: parent軸 (new) :)
 
+declare function axis:parent ($list as node()*, $label as xs:string)
+as node()*
+{
+  axis:SearchParent($list, $label, (), (), 1, ())
+};
+
+declare function axis:SearchParent ($list as node()*, $label as xs:string, $next as node()*, $parent as node()*, $num as xs:integer, $result as node()*)
+as node()*
+{
+ let $startNum := getlist:searchTerminal($list, $num)
+ let $currentlist := getlist:getList($list, $startNum, ())
+ let $newNum := getlist:searchTerminal($list, $startNum + 1)
+ return  if (axis:checkcurrentlist(pointer:gotosibling($currentlist), $parent, 1))
+         then  if ($newNum = 0)
+               then axis:self-next($next, 1, $label, $result)
+               else axis:SearchParent($list, $label, $next, ($currentlist, axis:getparent($parent, 1)), $newNum, $result)
+         else  let $parentList := pointer:gotoparent($currentlist)
+               let $newlist := ddo:lastsetDDOlist($next, $parentList, 1,1)
+               return  if ($parentList[fn:last()]/@type = "root")
+                       then  $result
+                       else  if ($newNum = 0)
+                             then  axis:self-next($newlist, 1, $label, $result)
+                             else  axis:SearchParent($list, $label, $newlist, ($currentlist, $parentList), $newNum, $result)
+};
+
+(: old :)
+(:
 declare function axis:parent ($list as node()*, $label as xs:string)
 as node()*
 {
@@ -222,8 +249,11 @@ as node()*
                 then ddo:lastsetDDOlist($output, $newList, 1, 1)
                 else $output
 };
+:)
 
-(: ancestor軸 :)
+
+(: ancestor軸  (old) :)
+(:
 declare function axis:ancestor ($list as node()*, $label as xs:string)
 as node()*
 {
@@ -236,7 +266,9 @@ as node()*
           then  $resultList
           else  axis:ancestor-next($list, $newNum, $label, $resultList)
 };
+:)
 
+(:
 declare function axis:ancestor-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
 as node()*
 {
@@ -248,6 +280,22 @@ as node()*
           else  axis:ancestor-next($list, $newNum, $label, $resultList)
 };
 
+(: new :)
+declare function axis:ancestor-next ($list as node()*, $num as xs:integer, $label as xs:string, $output as node()*)
+as node()*
+{
+  (:fn:trace((), "axis:ancestor-next"),:)
+  let $resultList := axis:SearchAncestor(getlist:getList($list, $num, ()), $label, $output) (: getListでリストを作成しparentを探す :)
+  let $newNum := getlist:searchTerminal($list, $num + 1)
+  return  if ($newNum = 0)
+          then  if (fn:empty($resultList))
+                then  $output
+                else  axis:ancestor-next($resultList, getlist:searchTerminal($resultList, 1), $label, (axis:self-next($resultList, 1, $label, $output)))
+          else  axis:ancestor-next($list, $newNum, $label, $resultList)
+};
+:)
+
+(:
 declare function axis:SearchAncestor ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
@@ -256,20 +304,68 @@ as node()*
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if ($current/@type = "root")
           then  $output
-          else  let $output1 := (
+          else  (:let $output1 := (
                                  if (fn:name($current) = $label or $label = "*")
                                  then ddo:lastsetDDOlist($output, $newList, 1, 1)
                                  else $output
                                 )
-                return axis:SearchAncestor($newList, $label, $output1)
-                (:
+                return axis:SearchAncestor($newList, $label, $output1):)
                 if (fn:name($current) = $label or $label = "*")
                 then ddo:lastsetDDOlist($output, $newList, 1, 1)
-                else axis:SearchAncestor($newList, $label, $output)
-                :)
+                else axis:SearchAncestor($newList, $label, $output)            
+};
+:)
+
+
+(: ancestor軸 (new) :)
+declare function axis:ancestor ($list as node()*, $label as xs:string)
+as node()*
+{
+  (:fn:trace((), "axis:ancestor"),:)
+  axis:SearchAncestor($list, $label, (), (), 1, ())
+};
+
+declare function axis:SearchAncestor ($list as node()*, $label as xs:string, $next as node()*, $parent as node()*, $num as xs:integer, $result as node()*)
+as node()*
+{
+ let $startNum := getlist:searchTerminal($list, $num)
+ let $currentlist := getlist:getList($list, $startNum, ())
+ let $newNum := getlist:searchTerminal($list, $startNum + 1)
+ return  if (axis:checkcurrentlist(pointer:gotosibling($currentlist), $parent, 1))
+         then  if ($newNum = 0)
+               then axis:SearchAncestor($next, $label, (), ($currentlist, axis:getparent($parent, 1)), 1, axis:self-next($next, 1, $label, $result))
+               else axis:SearchAncestor($list, $label, $next, ($currentlist, axis:getparent($parent, 1)), $newNum, $result)
+         else  let $parentList := pointer:gotoparent($currentlist)
+               let $newlist := ddo:lastsetDDOlist($next, $parentList, 1,1)
+               return  if ($parentList[fn:last()]/@type = "root")
+                       then  $result
+                       else  if ($newNum = 0)
+                             then  axis:SearchAncestor($newlist, $label, (), ($currentlist, $parentList), 1, axis:self-next($newlist, 1, $label, $result))     
+                             else  axis:SearchAncestor($list, $label, $newlist, ($currentlist, $parentList), $newNum, $result)     
                 
 };
 
+declare function axis:checkcurrentlist ($list as node()*, $parentlist as node()*, $num as xs:integer)
+as xs:boolean
+{
+  if (fn:empty($list))
+  then  fn:false()
+  else  if ($list[$num] is $parentlist[$num])
+        then  if (fn:empty($list[$num + 1]))
+              then  fn:true()
+              else  axis:checkcurrentlist($list, $parentlist, $num + 1)
+        else  fn:false()
+};
+
+declare function axis:getparent ($parentlist as node()*, $num as xs:integer)
+as node()*
+{
+ if ($parentlist[$num]/@type = "T")
+ then $parentlist[fn:position() > $num]
+ else axis:getparent($parentlist, $num + 1)
+};
+
+(:
 (: ancestor-or-self軸 :)
 declare function axis:ancestor-or-self ($list as node()*, $label as xs:string)
 as node()*
@@ -282,6 +378,7 @@ as node()*
           then  $resultList
           else  axis:ancestor-next($list, $newNum, $label, $resultList)
 };
+:)
 
 (: following-sibling軸 :)
 declare function axis:following-sibling ($list as node()*, $label as xs:string)

@@ -13,7 +13,7 @@ import module "http://xqueryz/file" at "file.xq";
 declare function pointer:type-check-new ($list as node()*)
 as node()*
 {
-fn:trace((), "type"),
+(:fn:trace((), "type"),:)
   (: 非終端記号の場合 :)
   if ($list[fn:last()]/@type = "N")
   then
@@ -41,7 +41,7 @@ fn:trace((), "type"),
 declare function pointer:gotoparent ($list as node()*)
 as node()*
 {
- fn:trace((), "gotoparent"),
+(: fn:trace((), "gotoparent"),:)
   let $current := $list[fn:last()]
   return
                   if ($current/parent::*/@type = "N") (: 親が非終端記号の場合 :)(: rankがいくつの非終端記号によって変わる :)
@@ -55,12 +55,35 @@ as node()*
                     else if(fn:count($current/preceding-sibling::*) = 3)
                     then  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y3[@type="V"]))
                     else ()
-                  else if($current/parent::*/@type="N_root")  (: 親が非終端記号の部分木の頂点の場合 :)
+                  else if($current/parent::*/@type="nonterminal_root")  (: 親が非終端記号の部分木の頂点の場合 :)
                   then
                     pointer:gotoparent($list[fn:position() < fn:last()])
                   else  (: 親が終端記号の場合 :)
                     if($current is $current/parent::*/*[1]) (: first child or next sibling:)
                     then  ($list[fn:position() < fn:last()], $current/parent::*)
                     else  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*))
+};
+
+declare function pointer:gotosibling ($list as node()*)
+as node()*
+{
+  let $current := $list[fn:last()]
+  return
+                  if ($current/parent::*/@type = "N") (: 親が非終端記号の場合 :)(: rankがいくつの非終端記号によって変わる :)
+                  then
+                    if(fn:count($current/preceding-sibling::*) = 0)
+                    then  pointer:gotosibling(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y0[@type="V"]))
+                    else if(fn:count($current/preceding-sibling::*) = 1)
+                    then  pointer:gotosibling(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y1[@type="V"]))
+                    else if(fn:count($current/preceding-sibling::*) = 2)
+                    then  pointer:gotosibling(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y2[@type="V"]))
+                    else if(fn:count($current/preceding-sibling::*) = 3)
+                    then  pointer:gotosibling(($list[fn:position() < fn:last()], $current/parent::*, $file:original/*/*[name()=fn:name($current/parent::*)]/*[2]//y3[@type="V"]))
+                    else ()
+                  else if($current/parent::*/@type="nonterminal_root")  (: 親が非終端記号の部分木の頂点の場合 :)
+                  then
+                    pointer:gotosibling($list[fn:position() < fn:last()])
+                  else  (: 親が終端記号の場合 :)
+                    ($list[fn:position() < fn:last()], $current/parent::*)
 };
 
