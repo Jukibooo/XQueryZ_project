@@ -6,14 +6,11 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['Nasa.xml']
+filenames = ['BaseBall.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::creator': 'axis:descendant($v, "creator")',
-					'$v/descendant::date/preceding-sibling::creator': 'axis:preceding-sibling(axis:descendant($v, "date"), "creator")',
-					'$v/descendant::altname': 'axis:descendant($v, "altname")',
-					'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")'
+					'$v/descendant::PLAYER': 'axis:descendant($v, "PLAYER")'
 			}
 
 def main ():

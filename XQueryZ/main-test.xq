@@ -40,13 +40,16 @@ axis:ancestor(axis:descendant($v, "title"),"dataset")
 
 
 
-(:
+
 unranked:output(
 
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
-return axis:parent(axis:descendant($v, "reference"),"*")
+return
+(:===///===:)
+axis:child(axis:descendant($v, "dataset"), "altname")
+(:===///===:)
 
 (:====================================================:)
 ,
@@ -54,21 +57,22 @@ return axis:parent(axis:descendant($v, "reference"),"*")
 ,
 ()
 )
-:)
 
 
+(:
 compressed:output(
 
 (:=====================問合せ処理=======================:)
 
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
-(:===///===:)
+
 axis:descendant($v, "title")
-(:===///===:)
+
 
 (:====================================================:)
 
 )
+:)
 
 

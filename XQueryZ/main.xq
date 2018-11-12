@@ -58,7 +58,7 @@ unranked:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:ancestor(axis:descendant($v, "source"), "dataset")
+axis:following-sibling(axis:descendant($v, "reference"), "keyword")
 (:===///===:)
 
 (:====================================================:)
