@@ -6,11 +6,11 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['BaseBall.xml']
+filenames = ['Shakespeare.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::PLAYER': 'axis:descendant($v, "PLAYER")'
+					'$v/descendant::TITLE': 'axis:descendant($v, "TITLE")'
 			}
 
 def main ():
