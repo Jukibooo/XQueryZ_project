@@ -6,11 +6,11 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['Nasa.xml']
+filenames = ['DBLP.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::dataset/child::altname': 'axis:child(axis:descendant($v, "dataset"), "altname")'
+					'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")'
 			}
 
 def main ():
