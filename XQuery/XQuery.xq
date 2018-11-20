@@ -1,2 +1,2 @@
-for $v in doc("../ex/BaseBall/BaseBall-n.xml")
-return $v/*/*/*/*
+for $v in doc("../ex/Nasa/Nasa-n.xml")
+return $v//reference/source
