@@ -4,6 +4,7 @@ import subprocess
 import json
 import requests
 import sys
+import time
 
 #辞書に登録（ファイル）
 filenames = ['../ex/Nasa/Nasa.xml']
@@ -63,8 +64,10 @@ def main ():
 			#file.write(str(query) + '\n\n' + str(result))
 			#file.close()
 			cmd = '/usr/bin/time -f "%MKB" ./XQueryZ.sh'
+			start = time.time()
 			result = subprocess.check_output( cmd.split(' ') ) 
-			Signal(query+' (compressed)', string(result))
+			elapsed_time = time.time() - start
+			Signal(string(query)+' (compressed)', string(result)+"\n"+string(elapsed_time))
 			
 			
 			###非圧縮文書に対する問い合わせ
@@ -89,7 +92,7 @@ def main ():
 			#file.close()
 			cmd = '/usr/bin/time -f "%MKB" ./XQuery.sh'
 			result = subprocess.check_output( cmd.split(' ') ) 
-			Signal(query+' (uncompressed)', string(result))
+			Signal(string(query)+' (uncompressed)', string(result)+"\n"+string(elapsed_time))
 		
 	else:
 		Signal('Finish', '')
