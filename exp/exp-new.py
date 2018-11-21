@@ -67,7 +67,7 @@ def main ():
 			start = time.time()
 			result = subprocess.check_output( cmd.split(' ') ) 
 			elapsed_time = time.time() - start
-			Signal(str(count)+' (compressed)', str(result)+"\n"+string(elapsed_time))
+			Signal(str(query)+' (compressed)', str(result)+"\n"+str(elapsed_time))
 			
 			
 			###非圧縮文書に対する問い合わせ
@@ -92,7 +92,7 @@ def main ():
 			#file.close()
 			cmd = '/usr/bin/time -f "%MKB" ./XQuery.sh'
 			result = subprocess.check_output( cmd.split(' ') ) 
-			Signal(str(count)+' (uncompressed)', str(result)+"\n"+string(elapsed_time))
+			Signal(str(query)+' (uncompressed)', str(result)+"\n"+str(elapsed_time))
 		
 	else:
 		Signal('Finish', '')
