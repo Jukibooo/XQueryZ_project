@@ -36,7 +36,7 @@ queries = {
 def main ():
 	count = 0
 
-	for filename in filenames:
+	
 		#辞書をループ
 		for query in queries:
 			count += 1
