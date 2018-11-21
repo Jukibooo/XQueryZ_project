@@ -64,7 +64,7 @@ def main ():
 			#file.close()
 			cmd = '/usr/bin/time -f "%MKB" ./XQueryZ.sh'
 			result = subprocess.check_output( cmd.split(' ') ) 
-			Signal(query+' (compressed)', result)
+			Signal(query+' (compressed)', string(result))
 			
 			
 			###非圧縮文書に対する問い合わせ
@@ -89,7 +89,7 @@ def main ():
 			#file.close()
 			cmd = '/usr/bin/time -f "%MKB" ./XQuery.sh'
 			result = subprocess.check_output( cmd.split(' ') ) 
-			Signal(query+' (uncompressed)', result)
+			Signal(query+' (uncompressed)', string(result))
 		
 	else:
 		Signal('Finish', '')
