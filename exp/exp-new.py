@@ -62,7 +62,7 @@ def main ():
 			#file = open(path, 'w')
 			#file.write(str(query) + '\n\n' + str(result))
 			#file.close()
-			cmd = '/usr/bin/time -f "%M KB" ./XQueryZ.sh'
+			cmd = '/usr/bin/time -f "%MKB" ./XQueryZ.sh'
 			result = subprocess.check_output( cmd.split(' ') ) 
 			Signal(query+' (compressed)', result)
 			
