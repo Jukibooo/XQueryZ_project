@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filename = ['../ex/Nasa/Nasa.xml']
+filenames = ['../ex/Nasa/Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
