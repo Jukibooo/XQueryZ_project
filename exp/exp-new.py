@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filename = '../ex/Nasa/Nasa.xml'
+filename = ['../ex/Nasa/Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -36,7 +36,7 @@ queries = {
 def main ():
 	count = 0
 
-	
+	for filename in filenames:
 		#辞書をループ
 		for query in queries:
 			count += 1
