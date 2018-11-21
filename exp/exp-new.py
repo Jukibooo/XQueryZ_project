@@ -92,7 +92,7 @@ def main ():
 			#file.close()
 			cmd = '/usr/bin/time -f "%MKB" ./XQuery.sh'
 			result = subprocess.check_output( cmd.split(' ') ) 
-			Signal(string(query)+' (uncompressed)', string(result)+"\n"+string(elapsed_time))
+			Signal(string(count)+' (uncompressed)', string(result)+"\n"+string(elapsed_time))
 		
 	else:
 		Signal('Finish', '')
