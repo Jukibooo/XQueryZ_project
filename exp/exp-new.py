@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Nasa/Nasa.xml']
+filename = '../ex/Nasa/Nasa.xml'
 
 #辞書に登録（問合せ）
 queries = {
@@ -63,7 +63,8 @@ def main ():
 			#file.write(str(query) + '\n\n' + str(result))
 			#file.close()
 			cmd = '/usr/bin/time -f "%M KB" ./XQueryZ.sh'
-			subprocess.call( cmd, shell=True  ) 
+			result = subprocess.check_output( cmd.split(" ") ) 
+			Signal(query+' (compressed)', result)
 			
 			
 			###非圧縮文書に対する問い合わせ
@@ -87,7 +88,8 @@ def main ():
 			#file.write(str(query) + '\n\n' + str(result))
 			#file.close()
 			cmd = '/usr/bin/time -f "%M KB" ./XQuery.sh'
-			subprocess.call( cmd, shell=True  ) 
+			result = subprocess.check_output( cmd.split(" ") ) 
+			Signal(query+' (uncompressed)', result)
 		
 	else:
 		Signal('Finish', '')
