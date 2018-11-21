@@ -63,7 +63,7 @@ def main ():
 			#file.write(str(query) + '\n\n' + str(result))
 			#file.close()
 			cmd = '/usr/bin/time -f "%M KB" ./XQueryZ.sh'
-			result = subprocess.check_output( cmd.split(" ") ) 
+			result = subprocess.check_output( cmd.split(' ') ) 
 			Signal(query+' (compressed)', result)
 			
 			
@@ -87,8 +87,8 @@ def main ():
 			#file = open(path, 'w')
 			#file.write(str(query) + '\n\n' + str(result))
 			#file.close()
-			cmd = '/usr/bin/time -f "%M KB" ./XQuery.sh'
-			result = subprocess.check_output( cmd.split(" ") ) 
+			cmd = '/usr/bin/time -f "%MKB" ./XQuery.sh'
+			result = subprocess.check_output( cmd.split(' ') ) 
 			Signal(query+' (uncompressed)', result)
 		
 	else:
