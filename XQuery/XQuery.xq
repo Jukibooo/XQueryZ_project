@@ -1,2 +1,8 @@
-for $v in doc("../ex/Nasa/Nasa-n.xml")
-return $v//reference/source
+for $v in 
+(:===///===:)
+doc("../ex/Nasa/Nasa.xml")
+(:===///===:)
+return
+(:===///===:)
+$v/descendant::fields/parent::tableHead
+(:===///===:)
