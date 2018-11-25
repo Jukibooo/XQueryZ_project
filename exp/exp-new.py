@@ -71,7 +71,7 @@ def main ():
 			#result = sys.stdout.buffer.write(res.stdout)
 			#print(result)
 			#elapsed_time = time.time() - start
-			Signal(str(query)+' (compressed)', str(result) + "\n" + str(elapsed_time))
+			Signal(str(query)+' (compressed)', str(elapsed_time))
 			
 			
 			###非圧縮文書に対する問い合わせ
@@ -102,7 +102,7 @@ def main ():
 			#result = sys.stdout.buffer.write(res.stdout)
 			#print(result)
 			elapsed_time = time.time() - start
-			Signal(str(query)+' (uncompressed)', str(result) + "\n" + str(elapsed_time))
+			Signal(str(query)+' (uncompressed)', str(elapsed_time))
 		
 	else:
 		Signal('Finish', '')
