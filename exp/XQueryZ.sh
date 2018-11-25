@@ -2,4 +2,4 @@
 
 #java -Xmx1g -Xss1g -cp saxon9he.jar net.sf.saxon.Query -t -o:"../result/result3.xml" -q:"../XQueryZ/main.xq"
 
-basex -o "../result/result.xml" ../XQueryZ/XQueryZ.xq
+basex -o "../result/result.xml" ../XQueryZ/main.xq
