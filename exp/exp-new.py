@@ -70,7 +70,7 @@ def main ():
 			#result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0]
 			#result = sys.stdout.buffer.write(res.stdout)
 			#print(result)
-			#elapsed_time = time.time() - start
+			elapsed_time = time.time() - start
 			Signal(str(query)+' (compressed)', str(elapsed_time))
 			
 			
