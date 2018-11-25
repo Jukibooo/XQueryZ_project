@@ -65,7 +65,8 @@ def main ():
 			#file.close()
 			cmd = '/usr/bin/time -f "%MKB" ./XQueryZ.sh'
 			start = time.time()
-			result = subprocess.check_output( cmd.split(' ') ) 
+			#result = subprocess.check_output( cmd.split(' ') ) 
+			result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0]
 			print(result)
 			elapsed_time = time.time() - start
 			Signal(str(query)+' (compressed)', str(result)+"\n"+str(elapsed_time))
@@ -93,7 +94,8 @@ def main ():
 			#file.close()
 			cmd = '/usr/bin/time -f "%MKB" ./XQuery.sh'
 			start = time.time()
-			result = subprocess.check_output( cmd.split(' ') ) 
+			#result = subprocess.check_output( cmd.split(' ') ) 
+			result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0] 
 			print(result)
 			elapsed_time = time.time() - start
 			Signal(str(query)+' (uncompressed)', str(result)+"\n"+str(elapsed_time))
