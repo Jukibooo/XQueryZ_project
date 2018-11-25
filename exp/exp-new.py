@@ -67,7 +67,7 @@ def main ():
 			start = time.time()
 			#result = subprocess.check_output( cmd.split(' ') ) 
 			result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0]
-			print(result)
+			print(result.decode('utf-8'))
 			elapsed_time = time.time() - start
 			Signal(str(query)+' (compressed)', str(result)+"\n"+str(elapsed_time))
 			
@@ -96,7 +96,7 @@ def main ():
 			start = time.time()
 			#result = subprocess.check_output( cmd.split(' ') ) 
 			result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0] 
-			print(result)
+			print(result.decode('utf-8'))
 			elapsed_time = time.time() - start
 			Signal(str(query)+' (uncompressed)', str(result)+"\n"+str(elapsed_time))
 		
