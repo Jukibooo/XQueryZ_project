@@ -7,7 +7,7 @@ import sys
 import time
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Nasa/Nasa.xml']
+filenames = ['../ex/Nasa/Nasa-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
