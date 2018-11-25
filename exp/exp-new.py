@@ -11,7 +11,7 @@ filenames = ['../ex/Nasa/Nasa.xml']
 
 #辞書に登録（問合せ）
 queries = {
-					'$v/descendant::publisher': 'axis:descendant($v, "publisher")',
+					#'$v/descendant::publisher': 'axis:descendant($v, "publisher")',
 					'$v/descendant::reference': 'axis:descendant($v, "reference")',
 					'$v/descendant::dataset': 'axis:descendant($v, "dataset")',
 					'$v/descendant::title': 'axis:descendant($v, "title")',
