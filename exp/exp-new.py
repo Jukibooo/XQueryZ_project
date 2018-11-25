@@ -66,10 +66,10 @@ def main ():
 			cmd = '/usr/bin/time -f "%MKB" ./XQueryZ.sh'
 			start = time.time()
 			print(str(query) + "(compressed)")
-			res = subprocess.run(cmd.split(' ') , stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			res = subprocess.run(cmd.split(' ') , stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			#result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0]
 			result = sys.stdout.buffer.write(res.stdout)
-			print(result.decode("utf-8"))
+			print(result)
 			elapsed_time = time.time() - start
 			Signal(str(query)+' (compressed)', str(elapsed_time))
 			
@@ -97,10 +97,10 @@ def main ():
 			cmd = '/usr/bin/time -f "%MKB" ./XQuery.sh'
 			start = time.time()
 			print(str(query) + "(uncompressed)")
-			res = subprocess.run(cmd.split(' ') , stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			res = subprocess.run(cmd.split(' ') , stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			#result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0]
 			result = sys.stdout.buffer.write(res.stdout)
-			print(result.decode("utf-8"))
+			print(result)
 			elapsed_time = time.time() - start
 			Signal(str(query)+' (uncompressed)', str(elapsed_time))
 		
