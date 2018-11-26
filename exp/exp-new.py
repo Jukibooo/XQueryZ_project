@@ -7,7 +7,7 @@ import sys
 import time
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Nasa/Nasa-n.xml']
+filenames = ['../ex/DBLP/DBLP-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -22,15 +22,14 @@ queries = {
 					#'$v/descendant::author/ancestor::reference': 'axis:ancestor(axis:descendant($v, "author"), "reference")',
 					#'$v/descendant::reference/parent::dataset': 'axis:parent(axis:descendant($v, "reference"), "dataset")',
 					#'$v/descendant::dataset/following::title': 'axis:following(axis:descendant($v, "dataset"), "title")',
-					
-					'$v/descendant::creator/ancestor::history': 'axis:ancestor(axis:descendant($v, "creator"), "history")',
-					'$v/descendant::creator': 'axis:descendant($v, "creator")',
-					'$v/descendant::date/preceding-sibling::creator': 'axis:preceding-sibling(axis:descendant($v, "date"), "creator")',
-					'$v/descendant::altname': 'axis:descendant($v, "altname")',
-					'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
-					'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
-					'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
-
+					#'$v/descendant::creator/ancestor::history': 'axis:ancestor(axis:descendant($v, "creator"), "history")',
+					#'$v/descendant::creator': 'axis:descendant($v, "creator")',
+					#'$v/descendant::date/preceding-sibling::creator': 'axis:preceding-sibling(axis:descendant($v, "date"), "creator")',
+					#'$v/descendant::altname': 'axis:descendant($v, "altname")',
+					#'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
+					#'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
+					#'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
+					'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")
 
 
 			}
