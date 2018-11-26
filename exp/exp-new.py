@@ -29,7 +29,7 @@ queries = {
 					#'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
 					#'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
 					#'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
-					'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")
+					'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")'
 
 
 			}
