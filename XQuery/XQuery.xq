@@ -1,8 +1,8 @@
 for $v in 
 (:===///===:)
-doc("../ex/Nasa/Nasa.xml")
+doc("../ex/Nasa/Nasa-n.xml")
 (:===///===:)
 return
 (:===///===:)
-$v/descendant::fields/parent::tableHead
+$v/descendant::reference
 (:===///===:)
