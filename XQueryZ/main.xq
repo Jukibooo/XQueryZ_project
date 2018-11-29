@@ -58,7 +58,7 @@ unranked:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:descendant($v, "reference")
+axis:child(axis:descendant($v, "proceedings"),"url")
 (:===///===:)
 
 (:====================================================:)

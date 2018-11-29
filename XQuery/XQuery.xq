@@ -1,8 +1,8 @@
 for $v in 
 (:===///===:)
-doc("../ex/Nasa/Nasa-n.xml")
+doc("../ex/DBLP/DBLP-n.xml")
 (:===///===:)
 return
 (:===///===:)
-$v/descendant::reference
+$v/descendant::proceedings/child::url
 (:===///===:)
