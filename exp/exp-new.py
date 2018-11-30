@@ -29,7 +29,13 @@ queries = {
 					#'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
 					#'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
 					#'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
-					'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")'
+					
+					'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")',
+					'$v/descendant::article/child::author': 'axis:child(axis:descendant($v, "article"), "author")',
+					'$v/descendant::year/parent::article': 'axis:parent(axis:descendant($v, "year"), "article")',
+					'$v/descendant::title/following-sibling::url': 'axis:following-sibling(axis:descendant($v, "title"), "url")',
+					'$v/descendant::journal/preceding-sibling::pages': 'axis:preceding-sibling(axis:descendant($v, "journal"), "pages")',
+					'$v/descendant::title/ancestor::inproceedings': 'axis:ancestor(axis:descendant($v, "title"), "inproceedings")'
 
 
 			}
@@ -63,9 +69,9 @@ def main ():
 			#file = open(path, 'w')
 			#file.write(str(query) + '\n\n' + str(result))
 			#file.close()
-			cmd = '/usr/bin/time -f "%MKB" ./XQueryZ.sh'
+			cmd = '/usr/bin/time -v ./XQueryZ.sh'
 			start = time.time()
-			print(str(query) + "(compressed)")
+			print("\n=========(compressed)========\n" + str(query) + "\n============================")
 			res = subprocess.run(cmd.split(' ') , stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			#result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0]
 			result = sys.stdout.buffer.write(res.stdout)
@@ -94,9 +100,9 @@ def main ():
 			#file = open(path, 'w')
 			#file.write(str(query) + '\n\n' + str(result))
 			#file.close()
-			cmd = '/usr/bin/time -f "%MKB" ./XQuery.sh'
+			cmd = '/usr/bin/time -v ./XQuery.sh'
 			start = time.time()
-			print(str(query) + "(uncompressed)")
+			print("\n========(uncompressed)=======\n" + str(query) + "\n============================")
 			res = subprocess.run(cmd.split(' ') , stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			#result = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True).communicate()[0]
 			result = sys.stdout.buffer.write(res.stdout)
