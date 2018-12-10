@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Nasa/Nasa-n.xml']
+filenames = ['../ex/Shakespeare/Shakespeare-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -30,8 +30,8 @@ queries = {
 					#'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
 
 					#'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
-					'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
-
+					#'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
+					'$v/descendant::ACT/child::TITLE': 'axis:descendant(axis:descendant($v, "ACT"), "TITLE")'
 			}
 
 def main ():
@@ -57,7 +57,7 @@ def main ():
 			file.close()
 
 			#実験
-			Signal(filename, query)
+			#Signal(filename, query)
 			path = '../result/commandoutput' + str(count)
 			result = subprocess.check_output(["./exp.sh", filename, query])
 			file = open(path, 'w')
@@ -79,7 +79,7 @@ def main ():
 			file.close()
 
 			#実験
-			Signal(filename, query)
+			#Signal(filename, query)
 			path = '../result/commandoutput-original' + str(count)
 			result = subprocess.check_output(["./exp-non.sh", filename+'-original', query])
 			file = open(path, 'w')
