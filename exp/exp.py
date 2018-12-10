@@ -80,7 +80,7 @@ def main ():
 			#実験
 			Signal(filename, query)
 			path = '../result/commandoutput-original' + str(count)
-			result = subprocess.check_output(["./exp.sh", filename+'-original', query])
+			result = subprocess.check_output(["./exp-non.sh", filename+'-original', query])
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()
