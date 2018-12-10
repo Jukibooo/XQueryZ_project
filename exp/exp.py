@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/BaseBall/BaseBall-n.xml']
+filenames = ['../ex/Nasa/Nasa-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -29,7 +29,8 @@ queries = {
 					#'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
 					#'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
 
-					'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
+					#'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
+					'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
 
 			}
 
