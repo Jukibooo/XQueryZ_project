@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Nasa/Nasa.xml']
+filenames = ['../ex/BaseBall/BaseBall-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -18,18 +18,18 @@ queries = {
 					#'$v/descendant::history': 'axis:descendant($v, "publisher")',
 					#'$v/descendant::field': 'axis:descendant($v, "field")',
 					#'$v/descendant::title/following-sibling::publisher': 'axis:following-sibling(axis:descendant($v, "title"), "publisher")',
-					'$v/descendant::author/ancestor::reference': 'axis:ancestor(axis:descendant($v, "author"), "reference")',
-					'$v/descendant::reference/parent::dataset': 'axis:parent(axis:descendant($v, "reference"), "dataset")',
+					#'$v/descendant::author/ancestor::reference': 'axis:ancestor(axis:descendant($v, "author"), "reference")',
+					#'$v/descendant::reference/parent::dataset': 'axis:parent(axis:descendant($v, "reference"), "dataset")',
 					#'$v/descendant::dataset/following::title': 'axis:following(axis:descendant($v, "dataset"), "title")',
-					'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
-					'$v/descendant::creator/ancestor::history': 'axis:ancestor(axis:descendant($v, "creator"), "history")',
+					#'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
+					#'$v/descendant::creator/ancestor::history': 'axis:ancestor(axis:descendant($v, "creator"), "history")',
 					#'$v/descendant::creator': 'axis:descendant($v, "creator")',
 					#'$v/descendant::date/preceding-sibling::creator': 'axis:preceding-sibling(axis:descendant($v, "date"), "creator")',
 					#'$v/descendant::altname': 'axis:descendant($v, "altname")',
 					#'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
-					'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
+					#'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
 
-
+					'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
 
 			}
 
@@ -56,7 +56,7 @@ def main ():
 			file.close()
 
 			#実験
-			#Signal(filename, query)
+			Signal(filename, query)
 			path = '../result/commandoutput' + str(count)
 			result = subprocess.check_output(["./exp.sh", filename, query])
 			file = open(path, 'w')
@@ -65,7 +65,6 @@ def main ():
 			
 			
 			###非圧縮文書に対する問い合わせ
-			'''
 			#ファイルの更新
 			file = open('../XQueryZ/main-original.xq', 'r')
 			strings = file.read()
@@ -79,13 +78,12 @@ def main ():
 			file.close()
 
 			#実験
-			#Signal(filename, query)
+			Signal(filename, query)
 			path = '../result/commandoutput-original' + str(count)
 			result = subprocess.check_output(["./exp.sh", filename+'-original', query])
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()
-			'''
 	else:
 		Signal('Finish', '')
 

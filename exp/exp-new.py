@@ -7,7 +7,7 @@ import sys
 import time
 
 #辞書に登録（ファイル）
-filenames = ['../ex/DBLP/DBLP-n.xml']
+filenames = ['../ex/BaseBall/BaseBall-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -29,7 +29,9 @@ queries = {
 					#'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
 					#'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
 					#'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
-					'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")'
+					#'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")'
+
+					'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
 
 
 			}
