@@ -32,7 +32,7 @@ queries = {
 					#'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
 					#'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
 					#'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE"
-					'$v/descendant::PP/preceding::NNP': 'axis:preceding(axis:descendant($v, "PP"), "NNP")'
+					'$v/descendant::NNP': 'axis:descendant($v, "NNP")'
 			}
 
 def main ():
