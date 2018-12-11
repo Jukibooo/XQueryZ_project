@@ -33,7 +33,7 @@ queries = {
 					#'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
 					#'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE")''
 					#'$v/descendant::NNP': 'axis:descendant($v, "NNP")'
-					'$v/descendant::T/child::L_discount': 'axis:child(axis:descendant($v, "T"), "L_discount")'
+					'$v/descendant::T/child::L_DISCOUNT': 'axis:child(axis:descendant($v, "T"), "L_DISCOUNT")'
 			}
 
 def main ():
