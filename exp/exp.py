@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Shakespeare/Shakespeare-n.xml']
+filenames = ['../ex/Treebank/Treebank-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -31,7 +31,8 @@ queries = {
 
 					#'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
 					#'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
-					'$v/descendant::ACT/child::TITLE': 'axis:descendant(axis:descendant($v, "ACT"), "TITLE")'
+					#'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE"
+					'$v/descendant::PP/preceding::NNP': 'axis:preceding(axis:descendant($v, "PP"), "NNP")'
 			}
 
 def main ():
