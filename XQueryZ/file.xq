@@ -11,4 +11,4 @@ module namespace file = "http://xqueryz/file";
 (:declare variable $file:original := doc("../ex/Shakespeare/Shakespeare-r.xml");:)
 (:declare variable $file:original := doc("../ex/Treebank/Treebank-r.xml");:)
 (:declare variable $file:original := doc("../ex/DBLP/DBLP-r.xml");:)
-declare variable $file:original := doc("../ex/Lineitem/Lineitem-r.xml")
+declare variable $file:original := doc("../ex/Lineitem/Lineitem-r.xml");
