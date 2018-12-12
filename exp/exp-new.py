@@ -83,14 +83,14 @@ def main ():
 			
 			###非圧縮文書に対する問い合わせ
 			#ファイルの更新
-			file = open('../XQuery/XQuery.xq', 'r')
+			file = open('../XQuery/main-original.xq', 'r')
 			strings = file.read()
 			file.close()
 			string = strings.split('(:===///===:)')
 			string[1] = str('doc("' + filename + '")')
 			string[3] = str(query)
 			strings = string[0] + '(:===///===:)\n' + string[1] + '\n(:===///===:)' + string[2] + '(:===///===:)\n' + string[3] + '\n(:===///===:)'
-			file = open('../XQuery/XQuery.xq', 'w')
+			file = open('../XQuery/main-original.xq', 'w')
 			file.write(strings)
 			file.close()
 
