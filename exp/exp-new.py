@@ -7,7 +7,7 @@ import sys
 import time
 
 #辞書に登録（ファイル）
-filenames = ['../ex/BaseBall/BaseBall-n.xml']
+filenames = ['../ex/Shakespeare/Sheakespeare-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -31,9 +31,9 @@ queries = {
 					#'$v/descendant::units/parent::field': 'axis:parent(axis:descendant($v, "units"), "field")',
 					#'$v/descendant::proceedings/child::url': 'axis:child(axis:descendant($v, "proceedings"), "url")'
 
-					'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
+					#'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
 					#'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
-					#'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE")'
+					'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE")'
 					#'$v/descendant::NNP': 'axis:descendant($v, "NNP")'
 					#'$v/descendant::T/child::L_DISCOUNT': 'axis:child(axis:descendant($v, "T"), "L_DISCOUNT")'
 					#'$v/descendant::proceedings/child::url' : 'axis:child(axis:descendant($v, "proceedings"), "url")' 
