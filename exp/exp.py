@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Lineitem/Lineitem-n.xml']
+filenames = ['../ex/BaseBall/BaseBall-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -29,11 +29,12 @@ queries = {
 					#'$v/descendant::reference/preceding::altname': 'axis:preceding(axis:descendant($v, "reference"), "altname")',
 					#'$v/descendant::fields/parent::tableHead': 'axis:parent(axis:descendant($v, "fields"), "tableHead")',
 
-					#'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
+					'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
 					#'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
 					#'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE")''
 					#'$v/descendant::NNP': 'axis:descendant($v, "NNP")'
-					'$v/descendant::T/child::L_DISCOUNT': 'axis:child(axis:descendant($v, "T"), "L_DISCOUNT")'
+					#'$v/descendant::T/child::L_DISCOUNT': 'axis:child(axis:descendant($v, "T"), "L_DISCOUNT")'
+					#'$v/descendant::proceedings/child::url' : 'axis:child(axis:descendant($v, "proceedings"), "url")' 
 			}
 
 def main ():
@@ -44,7 +45,7 @@ def main ():
 		for query in queries:
 			count += 1
 
-			
+			'''
 			###圧縮文書に対する問い合わせ
 
 			#ファイルの更新
@@ -65,7 +66,7 @@ def main ():
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()
-			
+			'''
 			
 			###非圧縮文書に対する問い合わせ
 			#ファイルの更新

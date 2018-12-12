@@ -7,11 +7,11 @@ import module "http://xqueryz/file" at "file.xq";
 
 for $v in
 (:===///===:)
-doc("../ex/DBLP/DBLP.xml")
+doc("../ex/Nasa/Nasa.xml")
 (:===///===:)
 
 return 
 
 (:===///===:)
-$v/descendant::author
+$v/descendant::dataset
 (:===///===:)
