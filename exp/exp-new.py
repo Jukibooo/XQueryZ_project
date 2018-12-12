@@ -7,7 +7,7 @@ import sys
 import time
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Shakespeare/Shakespeare-n.xml']
+filenames = ['../ex/Nasa/Nasa-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -33,7 +33,8 @@ queries = {
 
 					#'$v/descendant::PLAYER/parent::TEAM': 'axis:parent(axis:descendant($v, "PLAYER"), "TEAM")'
 					#'$v/descendant::dataset/descendant::author': 'axis:descendant(axis:descendant($v, "dataset"), "author")'
-					'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE")'
+					#'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE")'
+					'$v/descendant::dataset': 'axis:descendant($v, "dataset")'
 					#'$v/descendant::NNP': 'axis:descendant($v, "NNP")'
 					#'$v/descendant::T/child::L_DISCOUNT': 'axis:child(axis:descendant($v, "T"), "L_DISCOUNT")'
 					#'$v/descendant::proceedings/child::url' : 'axis:child(axis:descendant($v, "proceedings"), "url")' 
