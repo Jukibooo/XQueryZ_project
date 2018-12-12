@@ -7,7 +7,7 @@ import sys
 import time
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Shakespeare/Sheakespeare-n.xml']
+filenames = ['../ex/Shakespeare/Shakespeare-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
