@@ -7,7 +7,7 @@ import module "http://xqueryz/file" at "file.xq";
 
 for $v in
 (:===///===:)
-doc("../ex/Nasa/Nasa.xml")
+doc("../ex/Nasa/Nasa-n.xml")
 (:===///===:)
 
 return 
