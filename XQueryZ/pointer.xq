@@ -64,6 +64,7 @@ as node()*
                     else  pointer:gotoparent(($list[fn:position() < fn:last()], $current/parent::*))
 };
 
+(:一つ上の兄にポイントを移動する関数:)
 declare function pointer:gotosibling ($list as node()*)
 as node()*
 {

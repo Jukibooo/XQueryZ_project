@@ -191,16 +191,18 @@ as node()*
   axis:SearchParent($list, $label, (), (), 1, ())
 };
 
+(:$parent:=(カレントノードシーケンンス、　その親ノードシーケンス):)
 declare function axis:SearchParent ($list as node()*, $label as xs:string, $next as node()*, $parent as node()*, $num as xs:integer, $result as node()*)
 as node()*
 {
+(:  fn:trace((), "axis:SearchParent"),:)
  let $startNum := getlist:searchTerminal($list, $num)
  let $currentlist := getlist:getList($list, $startNum, ())
  let $newNum := getlist:searchTerminal($list, $startNum + 1)
- return  if (axis:checkcurrentlist(pointer:gotosibling($currentlist), $parent, 1))
-         then  if ($newNum = 0)
-               then axis:self-next($next, 1, $label, $result)
-               else axis:SearchParent($list, $label, $next, ($currentlist, axis:getparent($parent, 1)), $newNum, $result)
+ return  if (axis:checkcurrentlist(pointer:gotosibling($currentlist), $parent, 1))  (:一つ上の兄と$parentlistが一致しないか調べる:)
+         then  if ($newNum = 0) (:一致すればこれ以上調べるノードがあるか調査:)(:一致すれば重複になるため登録しない:)
+               then axis:self-next($next, 1, $label, $result) (:なければ調べたいノード名かどうかself軸で調べる:)
+               else axis:SearchParent($list, $label, $next, ($currentlist, axis:getparent($parent, 1)), $newNum, $result) (:あれば次へ:)
          else  let $parentList := pointer:gotoparent($currentlist)
                let $newlist := ddo:lastsetDDOlist($next, $parentList, 1,1)
                return  if ($parentList[fn:last()]/@type = "root")
@@ -328,6 +330,7 @@ as node()*
 declare function axis:SearchAncestor ($list as node()*, $label as xs:string, $next as node()*, $parent as node()*, $num as xs:integer, $result as node()*)
 as node()*
 {
+(:  fn:trace((), "axis:SearchAncestor"),:)
  let $startNum := getlist:searchTerminal($list, $num)
  let $currentlist := getlist:getList($list, $startNum, ())
  let $newNum := getlist:searchTerminal($list, $startNum + 1)
@@ -345,6 +348,7 @@ as node()*
                 
 };
 
+(:調査するノードが親ノードシーケンスと一致するか調査:)
 declare function axis:checkcurrentlist ($list as node()*, $parentlist as node()*, $num as xs:integer)
 as xs:boolean
 {
@@ -357,6 +361,7 @@ as xs:boolean
         else  fn:false()
 };
 
+(:$parentから親ノードシーケンスだけを取り出す:)
 declare function axis:getparent ($parentlist as node()*, $num as xs:integer)
 as node()*
 {
