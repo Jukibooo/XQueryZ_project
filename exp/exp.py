@@ -11,7 +11,7 @@ filenames = ['../ex/Nasa/Nasa-n.xml']
 #辞書に登録（問合せ）
 queries = {
 					'$v/descendant::reference/child::source': 'axis:child(axis:descendant($v, "reference"), "source")',
-					'$v/descendant::other/parent::source': 'axis:parent(axis:descendant($v, "othor"), "source")',
+					'$v/descendant::other/parent::source': 'axis:parent(axis:descendant($v, "other"), "source")',
 					'$v/descendant::dataset/descendant::history': 'axis:descendant(axis:descendant($v, "dataset"), "history")',
 					'$v/descendant::creator/ancestor::history': 'axis:ancestor(axis:descendant($v, "creator"), "history")',
 					'$v/descendant::reference/following::tableLinks': 'axis:following(axis:descendant($v, "reference"), "tableLinks")',
