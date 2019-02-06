@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/BaseBall/BaseBall-n.xml']
+filenames = ['../ex/Lineitem/Lineitem-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
