@@ -7,12 +7,10 @@ import module "http://xqueryz/file" at "file.xq";
 
 for $v in
 (:===///===:)
-doc("../ex/Nasa/Nasa-n.xml")
+doc("../ex/DBLP/DBLP.xml")
 (:===///===:)
 
 return 
-element result {  
 (:===///===:)
-$v/descendant::dataset/child::reference
+$v/descendant::proceedings/child::url
 (:===///===:)
-}
