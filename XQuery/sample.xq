@@ -1,2 +1,2 @@
-for $v in doc("../result/filesize/author.xml")
+for $v in doc("../result/otheraxis/preceding-sibling.xml")
 return $v

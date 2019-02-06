@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Lineitem/Lineitem-n.xml']
+filenames = ['../ex/Nasa/Nasa-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -22,9 +22,9 @@ queries = {
 					#'$v/descendant::initial/ancestor::author': 'axis:ancestor(axis:descendant($v, "initial"), "author")'
 
 					#'$v/descendant::PLAYER/child::HOME_RUNS': 'axis:child(axis:descendant($v, "PLAYER"), "HOME_RUNS")'
-					'$v/descendant::T/child::L_TAX': 'axis:child(axis:descendant($v, "T"), "L_TAX")'
+					#'$v/descendant::T/child::L_TAX': 'axis:child(axis:descendant($v, "T"), "L_TAX")'
 					#'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE")'
-					#'$v/descendant::keywords/child::keyword': 'axis:child(axis:descendant($v, "keywords"), "keyword")'
+					'$v/descendant::keywords/child::keyword': 'axis:child(axis:descendant($v, "keywords"), "keyword")'
 					#'$v/descendant::VP/child::VBG': 'axis:child(axis:descendant($v, "VP"), "VBG")'
 					#'$v/descendant::proceedings/child::url' : 'axis:child(axis:descendant($v, "proceedings"), "url")' 
 
