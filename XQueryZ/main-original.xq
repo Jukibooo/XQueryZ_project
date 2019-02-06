@@ -11,8 +11,6 @@ doc("../ex/Nasa/Nasa-n.xml")
 (:===///===:)
 
 return 
-element result {  
 (:===///===:)
-$v/descendant::initial/ancestor-or-self::author
+$v/descendant::author
 (:===///===:)
-}

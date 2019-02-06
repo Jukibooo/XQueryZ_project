@@ -58,7 +58,7 @@ unranked:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:following(axis:descendant($v, "reference"), "tableLinks")
+axis:ancestor(axis:descendant($v, "initial"), "author")
 (:===///===:)
 
 (:====================================================:)

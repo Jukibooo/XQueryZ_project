@@ -1,2 +1,2 @@
-for $v in doc("Nasa.xml")
-return let $v//ingest
+for $v in doc("../result/filesize/author.xml")
+return $v
