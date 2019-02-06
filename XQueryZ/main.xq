@@ -24,8 +24,11 @@ declare namespace compressed = "http://xqueryz/compressed";
 import module "http://xqueryz/compressed" at "compressed.xq";
 
 
+
+
 (:
 output:output(
+
 
 (:=====================問合せ処理=======================:)
 
@@ -33,8 +36,7 @@ for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 
 
-axis:ancestor(axis:descendant($v, "author"),"dataset")
-
+axis:descendant($v, "T")
 ,
 1,
 "START -> "
@@ -42,10 +44,12 @@ axis:ancestor(axis:descendant($v, "author"),"dataset")
 :)
 
 
+
 (:
 for $v in $file:original/*/*
 return axis-binary:ancestor(axis-binary:descendant($v, "reference"), "dataset")
 :)
+
 
 
 unranked:output(
@@ -58,7 +62,7 @@ unranked:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:parent(axis:descendant($v, "descriptions"), "dataset")
+axis:descendant-or-self(axis:descendant($v, "dataset"), "author")
 (:===///===:)
 
 (:====================================================:)

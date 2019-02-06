@@ -6,7 +6,7 @@ import requests
 import sys
 
 #辞書に登録（ファイル）
-filenames = ['../ex/Nasa/Nasa-n.xml']
+filenames = ['../ex/Lineitem/Lineitem-n.xml']
 
 #辞書に登録（問合せ）
 queries = {
@@ -24,18 +24,18 @@ queries = {
 					#'$v/descendant::PLAYER/child::HOME_RUNS': 'axis:child(axis:descendant($v, "PLAYER"), "HOME_RUNS")'
 					#'$v/descendant::T/child::L_TAX': 'axis:child(axis:descendant($v, "T"), "L_TAX")'
 					#'$v/descendant::ACT/child::TITLE': 'axis:child(axis:descendant($v, "ACT"), "TITLE")'
-					'$v/descendant::keywords/child::keyword': 'axis:child(axis:descendant($v, "keywords"), "keyword")'
+					#'$v/descendant::keywords/child::keyword': 'axis:child(axis:descendant($v, "keywords"), "keyword")'
 					#'$v/descendant::VP/child::VBG': 'axis:child(axis:descendant($v, "VP"), "VBG")'
 					#'$v/descendant::proceedings/child::url' : 'axis:child(axis:descendant($v, "proceedings"), "url")' 
 
-					#'$v/descendant::descriptions/child::description': 'axis:child(axis:descendant($v, "descriptions"), "description")',
-					#'$v/descendant::descriptions/parent::dataset': 'axis:parent(axis:descendant($v, "descriptions"), "dataset")',
-					#'$v/descendant::descriptions/descendant::description': 'axis:descendant(axis:descendant($v, "descriptions"), "description")',
-					#'$v/descendant::descriptions/ancestor::dataset': 'axis:ancestor(axis:descendant($v, "descriptions"), "dataset")',
-					#'$v/descendant::descriptions/following::tableLinks': 'axis:following(axis:descendant($v, "descriptions"), "tableLinks")',
-					#'$v/descendant::descriptions/preceding::keyword': 'axis:preceding(axis:descendant($v, "descriptions"), "keyword")',
-					#'$v/descendant::descriptions/following-sibling::history': 'axis:following-sibling(axis:descendant($v, "descriptions"), "history")',
-					#'$v/descendant::descriptions/preceding-sibling::keywords': 'axis:preceding-sibling(axis:descendant($v, "descriptions"), "keywords")'			
+					'$v/descendant::descriptions/child::description': 'axis:child(axis:descendant($v, "descriptions"), "description")',
+					'$v/descendant::descriptions/parent::dataset': 'axis:parent(axis:descendant($v, "descriptions"), "dataset")',
+					'$v/descendant::descriptions/descendant::description': 'axis:descendant(axis:descendant($v, "descriptions"), "description")',
+					'$v/descendant::descriptions/following::tableLinks': 'axis:following(axis:descendant($v, "descriptions"), "tableLinks")',
+					'$v/descendant::descriptions/preceding::keyword': 'axis:preceding(axis:descendant($v, "descriptions"), "keyword")',
+					'$v/descendant::descriptions/following-sibling::history': 'axis:following-sibling(axis:descendant($v, "descriptions"), "history")',
+					'$v/descendant::descriptions/preceding-sibling::keywords': 'axis:preceding-sibling(axis:descendant($v, "descriptions"), "keywords")',	
+					'$v/descendant::descriptions/ancestor::dataset': 'axis:ancestor(axis:descendant($v, "descriptions"), "dataset")'		
 					}
 
 def main ():
