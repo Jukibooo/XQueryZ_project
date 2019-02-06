@@ -11,6 +11,8 @@ doc("../ex/Nasa/Nasa-n.xml")
 (:===///===:)
 
 return 
+element result {  
 (:===///===:)
-$v/descendant::author
+$v/descendant::dataset/child::reference
 (:===///===:)
+}
