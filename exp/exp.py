@@ -60,6 +60,7 @@ def main ():
 			file.write(strings)
 			file.close()
 
+			'''
 			#実験
 			#Signal(filename, query)
 			path = '../result/commandoutput' + str(count)
@@ -67,8 +68,11 @@ def main ():
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()
+			'''
+			print ("\n\n\n\n\n" + str(query))
+			result = subprocess.check_output(["./XQueryZ.sh"])
 			
-			
+			'''
 			###非圧縮文書に対する問い合わせ
 			#ファイルの更新
 			file = open('../XQueryZ/main-original.xq', 'r')
@@ -89,6 +93,7 @@ def main ():
 			file = open(path, 'w')
 			file.write(str(query) + '\n\n' + str(result))
 			file.close()
+			'''
 	else:
 		Signal('Finish', '')
 
