@@ -54,7 +54,7 @@ as node()*
 declare function axis:SearchChild ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchChild"),
+(:  fn:trace((), "axis:SearchChild"),:)
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   return  if (fn:empty($current/*[1]))
@@ -66,7 +66,7 @@ as node()*
 declare function axis:SearchChild-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchChild-main"),
+(:  fn:trace((), "axis:SearchChild-main"),:)
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   let $output1 := ( 
@@ -105,7 +105,7 @@ as node()*
 declare function axis:SearchDescendant ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchDescendant"),
+(:  fn:trace((), "axis:SearchDescendant"),:)
   let $newList := pointer:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   return  if (fn:empty($current/*[1]))
@@ -116,7 +116,7 @@ as node()*
 declare function axis:SearchDescendant-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchDescendant-main"),
+(:  fn:trace((), "axis:SearchDescendant-main"),:)
   let $newList := pointer:type-check-new($list) (: 非終端か変数 -> 終端 :)
   let $current := $newList[fn:last()] (: カレントノード :)
   let $output1 := ( 
@@ -412,7 +412,7 @@ as node()*
 declare function axis:SearchFollowingSibling ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchFollowingSibling"),
+  (:fn:trace((), "axis:SearchFollowingSibling"),:)
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   return  if (fn:empty($current/*[2]))
@@ -424,7 +424,7 @@ as node()*
 declare function axis:SearchFollowingSibling-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchFollowingSibling-main"),
+  (:fn:trace((), "axis:SearchFollowingSibling-main"),:)
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   let $output1 := ( 
@@ -465,7 +465,7 @@ as node()*
 declare function axis:SearchFollowing ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchFollowing"),
+  (:fn:trace((), "axis:SearchFollowing"),:)
   let $current := $list[fn:last()]
   return  if (fn:empty($current/*[2]))
           then axis:SearchFollowing-parent(pointer:gotoparent($list), $label, $output)
@@ -475,7 +475,7 @@ as node()*
 declare function axis:SearchFollowing-parent ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchFollowing-parent"),
+  (:fn:trace((), "axis:SearchFollowing-parent"),:)
   let $current := $list[fn:last()]
   return  if ($current/@type = "root")
           then  $output
@@ -487,7 +487,7 @@ as node()*
 declare function axis:SearchFollowing-main ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchFollowing-main"),
+  (:fn:trace((), "axis:SearchFollowing-main"),:)
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   let $output1 := (
@@ -532,7 +532,7 @@ as node()*
 declare function axis:SearchPrecedingSibling ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
 as node()*
 {  
-  fn:trace((), "axis:SearchPrecedingSibling"),
+  (:fn:trace((), "axis:SearchPrecedingSibling"),:)
 
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
@@ -545,7 +545,7 @@ as node()*
 declare function axis:SearchPrecedingSibling-main ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
 as node()*
 {
-  fn:trace((), "axis:SearchPrecedingSibling-main"),
+   (:fn:trace((), "axis:SearchPrecedingSibling-main"),:)
 
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
@@ -594,7 +594,7 @@ as node()*
 declare function axis:SearchPreceding ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
 as node()*
 {
-  fn:trace((), "axis:SearchPreceding"),
+  (:fn:trace((), "axis:SearchPreceding"),:)
   let $current := $list[fn:last()]
   return  axis:SearchPreceding-main(($list[fn:last() > fn:position()], $current/*[1]), $label, $output, $newNode)
 };
@@ -602,7 +602,7 @@ as node()*
 declare function axis:SearchPreceding-parent ($list as node()*, $label as xs:string, $output as node()*)
 as node()*
 {
-  fn:trace((), "axis:SearchPreceding-parent"),
+  (:fn:trace((), "axis:SearchPreceding-parent"),:)
   let $current := $list[fn:last()]
   let $parentlist := pointer:gotoparent($list)
   return  if ($current/@type = "root")
@@ -613,7 +613,7 @@ as node()*
 declare function axis:SearchPreceding-main ($list as node()*, $label as xs:string, $output as node()*, $newNode as node())
 as node()*
 {
-  fn:trace((), "axis:SearchPreceding-main"),
+  (:fn:trace((), "axis:SearchPreceding-main"),:)
   let $newList := pointer:type-check-new($list)
   let $current := $newList[fn:last()]
   return  if ($current is $newNode)
