@@ -70,7 +70,7 @@ def main ():
 			file.close()
 			'''
 			print ("\n\n\n\n\n" + str(query))
-			result = subprocess.check_output(["./XQueryZ.sh"])
+			result = subprocess.run('./XQueryZ.sh')
 			
 			'''
 			###非圧縮文書に対する問い合わせ

@@ -62,7 +62,7 @@ unranked:output(
 for $v in $file:original/root/S/child::*[2]/*[1]
 return 
 (:===///===:)
-axis:descendant-or-self(axis:descendant($v, "dataset"), "author")
+axis:child(axis:descendant($v, "proceedings"), "url")
 (:===///===:)
 
 (:====================================================:)
