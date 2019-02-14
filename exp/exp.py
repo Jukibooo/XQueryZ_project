@@ -37,10 +37,11 @@ queries = {
 					#'$v/descendant::descriptions/preceding-sibling::keywords': 'axis:preceding-sibling(axis:descendant($v, "descriptions"), "keywords")',	
 					#'$v/descendant::descriptions/ancestor::dataset': 'axis:ancestor(axis:descendant($v, "descriptions"), "dataset")'	
 
-					'$v/descendant::reference/child::*': 'axis:child(axis:descendant($v, "reference"), "*")',	
-					'$v/descendant::reference/descendant::*': 'axis:child(axis:descendant($v, "reference"), "*")',
+					#'$v/descendant::reference/child::*': 'axis:child(axis:descendant($v, "reference"), "*")',	
+					
 					'$v/descendant::reference/parent::*': 'axis:child(axis:descendant($v, "reference"), "*")',
 					'$v/descendant::reference/following-sibling::*': 'axis:child(axis:descendant($v, "reference"), "*")'
+					'$v/descendant::reference/descendant::*': 'axis:child(axis:descendant($v, "reference"), "*")'
 					}
 
 def main ():
