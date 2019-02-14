@@ -40,7 +40,7 @@ queries = {
 					#'$v/descendant::reference/child::*': 'axis:child(axis:descendant($v, "reference"), "*")',	
 					
 					'$v/descendant::reference/parent::*': 'axis:child(axis:descendant($v, "reference"), "*")',
-					'$v/descendant::reference/following-sibling::*': 'axis:child(axis:descendant($v, "reference"), "*")'
+					'$v/descendant::reference/following-sibling::*': 'axis:child(axis:descendant($v, "reference"), "*")',
 					'$v/descendant::reference/descendant::*': 'axis:child(axis:descendant($v, "reference"), "*")'
 					}
 
